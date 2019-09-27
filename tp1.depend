@@ -1,12 +1,12 @@
 # depslib dependency file v1.0
-1568774816 source:c:\users\nio\desktop\uns-oc\tp1\main.c
+1568949934 source:c:\users\nio\desktop\uns-oc\tp1\main.c
 	<stdio.h>
 	<stdlib.h>
 	"lista.h"
 
 1568345926 c:\users\nio\desktop\uns-oc\tp1\lista.h
 
-1568776576 source:c:\users\nio\desktop\uns-oc\tp1\lista.c
+1568941443 source:c:\users\nio\desktop\uns-oc\tp1\lista.c
 	<stdlib.h>
 	"lista.h"
 
