@@ -70,8 +70,16 @@ void a_eliminar(tArbol a, tNodo n, void (*fEliminar)(tElemento)){
         posFin = l_fin(n->hijos);
         if(pos == posFin){
             fEliminar(n->elemento);
-            l_destruir(&(n->hijos),a_eliminar());
+            l_destruir(&(n->hijos),fEliminar();
             free(n);
+        }
+        else{
+            if (l_siguiente(n->hijos,pos) == posFin){
+
+            }
+            else
+                exit(ARB_POSICION_INVALIDA);
+
         }
     }
 
