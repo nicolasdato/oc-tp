@@ -62,6 +62,24 @@ tNodo a_insertar(tArbol a, tNodo np, tNodo nh, tElemento e){
     return nodo;
 }
 
+private void n_eliminar(tNodo n, void (*fEliminar)(tElemento))
+{
+    tPosicion pos;
+    tPosicion posFin;
+    struct nodo *nodo;
+
+    n->padre = NULL;
+    fEliminar(n->elemento);
+    pos = l_primera(n->hijos);
+    posFin = l_fin(n->hijos);
+    while (pos != posFin) {
+        nodo = l_recuperar(n->hijos, pos);
+        n_eliminar(nodo, fEliminar);
+        pos = l_siguiente(n->hijos, pos);
+    }
+    l_destruir(&n->hijos, free);
+}
+
 void a_eliminar(tArbol a, tNodo n, void (*fEliminar)(tElemento)){
     tPosicion pos;
     tPosicion posFin;
@@ -70,7 +88,7 @@ void a_eliminar(tArbol a, tNodo n, void (*fEliminar)(tElemento)){
         posFin = l_fin(n->hijos);
         if(pos == posFin){
             fEliminar(n->elemento);
-            l_destruir(&(n->hijos),fEliminar();
+            l_destruir(&(n->hijos), fEliminar);
             free(n);
         }
         else{
@@ -79,8 +97,15 @@ void a_eliminar(tArbol a, tNodo n, void (*fEliminar)(tElemento)){
             }
             else
                 exit(ARB_POSICION_INVALIDA);
+<<<<<<< Updated upstream
 
         }
     }
+=======
+>>>>>>> Stashed changes
 
+        }
+    }
 }
+
+
