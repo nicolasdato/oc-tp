@@ -1,6 +1,28 @@
 #include "arbol.h"
 #include <stdlib.h>
 
+void no_eliminar(tElemento elemento)
+{
+}
+
+void n_eliminar(tNodo n, void (*fEliminar)(tElemento))
+{
+    tPosicion pos;
+    tPosicion posFin;
+    struct nodo *nodo;
+
+    n->padre = NULL;
+    fEliminar(n->elemento);
+    pos = l_primera(n->hijos);
+    posFin = l_fin(n->hijos);
+    while (pos != posFin) {
+        nodo = l_recuperar(n->hijos, pos);
+        n_eliminar(nodo, fEliminar);
+        pos = l_siguiente(n->hijos, pos);
+    }
+    l_destruir(&(n->hijos), free);
+}
+
 void crear_arbol(tArbol * a){
     (*a) = malloc(sizeof(struct arbol));
     (*a)->raiz = NULL;
@@ -57,55 +79,98 @@ tNodo a_insertar(tArbol a, tNodo np, tNodo nh, tElemento e){
         }
         crear_lista(&(nodo->hijos));
         nodo->elemento = e;
-        l_insertar(np->hijos, l_anterior(np->hijos, pos), nodo);
+        l_insertar(np->hijos, pos, nodo);
     }
     return nodo;
-}
-
-private void n_eliminar(tNodo n, void (*fEliminar)(tElemento))
-{
-    tPosicion pos;
-    tPosicion posFin;
-    struct nodo *nodo;
-
-    n->padre = NULL;
-    fEliminar(n->elemento);
-    pos = l_primera(n->hijos);
-    posFin = l_fin(n->hijos);
-    while (pos != posFin) {
-        nodo = l_recuperar(n->hijos, pos);
-        n_eliminar(nodo, fEliminar);
-        pos = l_siguiente(n->hijos, pos);
-    }
-    l_destruir(&n->hijos, free);
 }
 
 void a_eliminar(tArbol a, tNodo n, void (*fEliminar)(tElemento)){
     tPosicion pos;
     tPosicion posFin;
+    tPosicion posPadre;
+    tPosicion posFinPadre;
+    struct nodo *padre;
+    struct nodo *hijo;
     if(n == a->raiz){
         pos = l_primera(n->hijos);
         posFin = l_fin(n->hijos);
         if(pos == posFin){
-            fEliminar(n->elemento);
-            l_destruir(&(n->hijos), fEliminar);
-            free(n);
+            a->raiz = NULL;
         }
         else{
             if (l_siguiente(n->hijos,pos) == posFin){
-
+                a->raiz = l_recuperar(n->hijos, pos);
+                a->raiz->padre = NULL;
             }
             else
                 exit(ARB_POSICION_INVALIDA);
-<<<<<<< Updated upstream
-
         }
     }
-=======
->>>>>>> Stashed changes
-
+    else{
+        padre = n->padre;
+        posPadre = l_primera(padre->hijos);
+        posFinPadre = l_fin(padre->hijos);
+        pos = l_primera(n->hijos);
+        posFin = l_fin(n->hijos);
+        if(pos == posFin){
+            while (posPadre != posFinPadre) {
+                if(n == l_recuperar(padre->hijos, posPadre)){
+                    l_eliminar(padre->hijos, posPadre, no_eliminar);
+                    break;
+                }
+                posPadre = l_siguiente(padre->hijos, posPadre);
+            }
+        }
+        else {
+           while (posPadre != posFinPadre) {
+                if(n == l_recuperar(padre->hijos, posPadre)){
+                    while (pos != posFin) {
+                        hijo = l_recuperar(n->hijos, pos);
+                        hijo->padre = padre;
+                        l_insertar(padre->hijos, posPadre, hijo);
+                        pos = l_siguiente(n->hijos, pos);
+                    }
+                    l_eliminar(padre->hijos, posPadre, no_eliminar);
+                    break;
+                }
+                posPadre = l_siguiente(padre->hijos, posPadre);
+            }
         }
     }
+    l_destruir(&(n->hijos), no_eliminar);
+    fEliminar(n->elemento);
+    free(n);
 }
 
+void a_destruir(tArbol * a, void (*fEliminar)(tElemento))
+{
+    struct nodo *nodo;
 
+    if((*a)->raiz != NULL){
+        nodo = (*a)->raiz;
+        n_eliminar(nodo,fEliminar);
+        free(nodo);
+    }
+    free(*a);
+}
+
+void a_sub_arbol(tArbol a, tNodo n, tArbol * sa)
+{
+    struct nodo *padre;
+    tPosicion pos;
+    tPosicion posFin;
+
+    crear_arbol(sa);
+    (*sa)->raiz = n;
+    padre = n->padre;
+    n->padre = NULL;
+    pos = l_primera(padre->hijos);
+    posFin = l_fin(padre->hijos);
+    while (pos != posFin) {
+        if(n == l_recuperar(padre->hijos, pos)){
+            l_eliminar(padre->hijos, pos, no_eliminar);
+            break;
+        }
+        pos = l_siguiente(padre->hijos, pos);
+    }
+}

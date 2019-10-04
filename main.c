@@ -1,45 +1,101 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "lista.h"
+#include "arbol.h"
+
+
+void mostrar_arbol(tArbol arbol, tNodo nodo)
+{
+    tLista lista;
+    tPosicion pos, posFin;
+    int *elemento;
+    elemento = a_recuperar(arbol, nodo);
+    printf("%d\n", *elemento);
+    lista = a_hijos(arbol, nodo);
+    pos = l_primera(lista);
+    posFin = l_fin(lista);
+    while(pos != posFin){
+
+        pos = l_siguiente(lista, pos);
+    }
+
+}
 
 int main()
 {
-    tLista lista;
+    tArbol arbol;
+    tNodo nodo, nodo2, nodo3;
+    int *elemento;
+        tLista lista;
+    tPosicion pos, posFin;
 
-    int opcion = 0, *ingresar;
-    printf("Hola!\n");
-    printf("Opciones:\n");
 
-    while(opcion != 4){
-        printf("1- crear lista\n");
-        printf("2- agregar elemento\n");
-        printf("3- imprimir por pantalla\n");
-        printf("4- salir\n");
-        scanf("%d",&opcion);
-        if(opcion == 1){
-             crear_lista(&lista);
-        }
-        else if(opcion == 2){
-            printf("Ingrese un numero entero, igrese -1 cuando desee parar\n");
-            while(opcion == 2){
-                ingresar = (int *)malloc(sizeof(int));
-                scanf("%d", ingresar);
-                if(*ingresar != -1) {
-                    l_insertar(lista, l_primera(lista), ingresar);
-                }
-                else
-                    opcion = 0;
-            }
-        }
-        else if(opcion == 3){
-            tPosicion pos = l_primera(lista);
-            while(pos != l_fin(lista)) {
-                int *elemento = l_recuperar(lista, pos);
-                printf("elemento: %d\n", *elemento);
-                pos = l_siguiente(lista, pos);
-            }
-        }
+    crear_arbol(&arbol);
+    elemento = malloc(sizeof(int));
+    *elemento = 1;
+    crear_raiz(arbol, elemento);
+    nodo = a_raiz(arbol);
+    elemento = malloc(sizeof(int));
+    *elemento = 2;
+    a_insertar(arbol, nodo, NULL, elemento);
+    elemento = malloc(sizeof(int));
+    *elemento = 3;
+    a_insertar(arbol, nodo, NULL, elemento);
+    elemento = malloc(sizeof(int));
+    *elemento = 5;
+    nodo2 = a_insertar(arbol, nodo, NULL, elemento);
+    elemento = malloc(sizeof(int));
+    *elemento = 4;
+    a_insertar(arbol, nodo, nodo2, elemento);
+    elemento = malloc(sizeof(int));
+    *elemento = 6;
+    a_insertar(arbol, nodo2, NULL, elemento);
+    elemento = malloc(sizeof(int));
+    *elemento = 7;
+    nodo3 = a_insertar(arbol, nodo2, NULL, elemento);
+    elemento = malloc(sizeof(int));
+    *elemento = 8;
+    a_insertar(arbol, nodo2, NULL, elemento);
+
+    //mostrar_arbol(arbol, raiz);
+
+
+    printf("%d\n",*(int *)a_recuperar(arbol,a_raiz(arbol)));
+    lista = a_hijos(arbol,a_raiz(arbol));
+    pos = l_primera(lista);
+    posFin = l_fin(lista);
+    while(pos != posFin){
+        printf("%d ",*(int *)a_recuperar(arbol,l_recuperar(lista,pos)));
+        pos = l_siguiente(lista, pos);
     }
-    l_destruir(&lista, free);
+    printf("\n");
+    lista = a_hijos(arbol,nodo2);
+    pos = l_primera(lista);
+    posFin = l_fin(lista);
+    while(pos != posFin){
+        printf("%d ",*(int *)a_recuperar(arbol,l_recuperar(lista,pos)));
+        pos = l_siguiente(lista, pos);
+    }
+    a_eliminar(arbol,nodo2,free);
+    printf("\n");
+    printf("\n");
+    printf("\n");
+
+    printf("%d\n",*(int *)a_recuperar(arbol,a_raiz(arbol)));
+    lista = a_hijos(arbol,a_raiz(arbol));
+    pos = l_primera(lista);
+    posFin = l_fin(lista);
+    while(pos != posFin){
+        printf("%d ",*(int *)a_recuperar(arbol,l_recuperar(lista,pos)));
+        pos = l_siguiente(lista, pos);
+    }
+    /*printf("\n");
+    lista = a_hijos(arbol,nodo2);
+    pos = l_primera(lista);
+    posFin = l_fin(lista);
+    while(pos != posFin){
+        printf("%d ",*(int *)a_recuperar(arbol,l_recuperar(lista,pos)));
+        pos = l_siguiente(lista, pos);
+    }*/
+    a_destruir(&arbol, free);
     return 0;
 }
