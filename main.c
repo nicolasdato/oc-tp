@@ -22,7 +22,7 @@ void mostrar_arbol(tArbol arbol, tNodo nodo)
 
 int main()
 {
-    tArbol arbol;
+    tArbol arbol, arbol2;
     tNodo nodo, nodo2, nodo3;
     int *elemento;
         tLista lista;
@@ -39,10 +39,10 @@ int main()
     a_insertar(arbol, nodo, NULL, elemento);
     elemento = malloc(sizeof(int));
     *elemento = 3;
-    a_insertar(arbol, nodo, NULL, elemento);
+    nodo2 = a_insertar(arbol, nodo, NULL, elemento);
     elemento = malloc(sizeof(int));
     *elemento = 5;
-    nodo2 = a_insertar(arbol, nodo, NULL, elemento);
+    a_insertar(arbol, nodo, NULL, elemento);
     elemento = malloc(sizeof(int));
     *elemento = 4;
     a_insertar(arbol, nodo, nodo2, elemento);
@@ -75,11 +75,12 @@ int main()
         printf("%d ",*(int *)a_recuperar(arbol,l_recuperar(lista,pos)));
         pos = l_siguiente(lista, pos);
     }
-    a_eliminar(arbol,nodo2,free);
+    a_sub_arbol(arbol, nodo, &arbol2);
+    //a_eliminar(arbol,nodo2,free);
     printf("\n");
     printf("\n");
     printf("\n");
-
+    /*
     printf("%d\n",*(int *)a_recuperar(arbol,a_raiz(arbol)));
     lista = a_hijos(arbol,a_raiz(arbol));
     pos = l_primera(lista);
@@ -88,7 +89,21 @@ int main()
         printf("%d ",*(int *)a_recuperar(arbol,l_recuperar(lista,pos)));
         pos = l_siguiente(lista, pos);
     }
+*/
+    printf("\n");
+    printf("\n");
+    printf("\n");
+    printf("%d\n",*(int *)a_recuperar(arbol2,a_raiz(arbol2)));
+    lista = a_hijos(arbol2,a_raiz(arbol2));
+    pos = l_primera(lista);
+    posFin = l_fin(lista);
+    while(pos != posFin){
+        printf("%d ",*(int *)a_recuperar(arbol2,l_recuperar(lista,pos)));
+        pos = l_siguiente(lista, pos);
+    }
     /*printf("\n");
+
+
     lista = a_hijos(arbol,nodo2);
     pos = l_primera(lista);
     posFin = l_fin(lista);
@@ -97,5 +112,7 @@ int main()
         pos = l_siguiente(lista, pos);
     }*/
     a_destruir(&arbol, free);
+    a_destruir(&arbol2, free);
+
     return 0;
 }

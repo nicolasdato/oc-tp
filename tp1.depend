@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1570161215 source:c:\users\nio\desktop\uns-oc\tp1\main.c
+1570760065 source:c:\users\nio\desktop\uns-oc\tp1\main.c
 	<stdio.h>
 	<stdlib.h>
 	"arbol.h"
@@ -10,7 +10,7 @@
 	<stdlib.h>
 	"lista.h"
 
-1570161188 source:c:\users\nio\desktop\uns-oc\tp1\arbol.c
+1570760188 source:c:\users\nio\desktop\uns-oc\tp1\arbol.c
 	"arbol.h"
 	<stdlib.h>
 
