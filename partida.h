@@ -1,22 +1,23 @@
 #ifndef PARTIDA_H_INCLUDED
 #define PARTIDA_H_INCLUDED
 
-#define PART_JUGADOR_1                  100
-#define PART_JUGADOR_2                  101
-#define PART_JUGADOR_RANDOM             102
+#define PART_JUGADOR_1                      100
+#define PART_JUGADOR_2                      101
+#define PART_JUGADOR_RANDOM                 102
 
-#define PART_MODO_USUARIO_VS_USUARIO    103
-#define PART_MODO_USUARIO_VS_AGENTEIA   104
+#define PART_MODO_USUARIO_VS_USUARIO        103
+#define PART_MODO_USUARIO_VS_AGENTE_IA      104
+#define PART_MODO_AGENTE_IA_VS_AGENTE_IA    105
 
-#define PART_MOVIMIENTO_OK              105
-#define PART_MOVIMIENTO_ERROR           106
-#define PART_SIN_MOVIMIENTO             107
-#define PART_GANA_JUGADOR_1             108
-#define PART_GANA_JUGADOR_2             109
-#define PART_EN_JUEGO                   110
-#define PART_EMPATE                     111
+#define PART_MOVIMIENTO_OK                  106
+#define PART_MOVIMIENTO_ERROR               107
+#define PART_SIN_MOVIMIENTO                 108
+#define PART_GANA_JUGADOR_1                 109
+#define PART_GANA_JUGADOR_2                 110
+#define PART_EN_JUEGO                       111
+#define PART_EMPATE                         112
 
-#define PART_ERROR_MEMORIA              112
+#define PART_ERROR_MEMORIA                  113
 
 struct tablero{
     int grilla [3][3];

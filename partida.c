@@ -7,7 +7,13 @@ void nueva_partida(tPartida * p, int modo_partida, int comienza, char * j1_nombr
 {
     int i,j ;
     (*p) = malloc(sizeof(struct partida));
+    if(*p == NULL){
+        exit(PART_ERROR_MEMORIA);
+    }
     (*p)->tablero = malloc(sizeof(struct tablero));
+    if((*p)->tablero == NULL){
+        exit(PART_ERROR_MEMORIA);
+    }
     (*p)->modo_partida = modo_partida;
     if (comienza == PART_JUGADOR_RANDOM) {
         srand(time(NULL));

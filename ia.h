@@ -4,13 +4,15 @@
 #include "arbol.h"
 #include "partida.h"
 
-// Importante: IA_PIERDE_MAX < IA_EMPATA_MAX < IA_GANA_MAX
+// Importante: IA_INFINITO_NEG < IA_PIERDE_MAX < IA_EMPATA_MAX < IA_GANA_MAX < IA_INFINITO_POS
 
-#define IA_PIERDE_MAX       1000
-#define IA_EMPATA_MAX       1001
-#define IA_GANA_MAX         1002
-#define IA_NO_TERMINO       1003
-#define IA_ERROR_MEMORIA    1004
+#define IA_INFINITO_NEG     1000
+#define IA_PIERDE_MAX       1001
+#define IA_EMPATA_MAX       1002
+#define IA_GANA_MAX         1003
+#define IA_INFINITO_POS     1004
+#define IA_NO_TERMINO       1005
+#define IA_ERROR_MEMORIA    1006
 
 struct busqueda_adversaria{
     tArbol arbol_busqueda;
@@ -19,7 +21,7 @@ struct busqueda_adversaria{
 };
 
 struct estado{
-    int tablero [3][3];
+    int grilla [3][3];
     int utilidad;
 };
 
