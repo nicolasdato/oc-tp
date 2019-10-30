@@ -60,7 +60,7 @@ int nuevo_movimiento(tPartida p, int mov_x, int mov_y)
         grilla = p->tablero->grilla;
         gano = 0;
         if(mov_x != 1 && mov_y !=1){
-            if(grilla[1][1] == grilla [mov_x][mov_y] && grilla[1][1] == grilla[fabs(mov_x-2)][fabs(mov_y-2)]){
+            if(grilla[1][1] == grilla [mov_x][mov_y] && grilla[1][1] == grilla[(int)fabs(mov_x-2)][(int)fabs(mov_y-2)]){
                 gano = grilla[1][1];
             }
             else{
