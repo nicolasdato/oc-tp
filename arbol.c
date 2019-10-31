@@ -35,7 +35,7 @@ void crear_raiz(tArbol a, tElemento e){
     if(a->raiz != NULL)
         exit(ARB_OPERACION_INVALIDA);
     a->raiz = malloc(sizeof(struct nodo));
-    if(a->raiz){
+    if(a->raiz == NULL){
         exit(ARB_ERROR_MEMORIA);
     }
     a->raiz->elemento = e;

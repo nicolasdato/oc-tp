@@ -128,3 +128,14 @@ tPosicion l_fin(tLista l)
     }
     return auxiliar;
 }
+
+/**
+ Retorna la longitud actual de la lista.
+**/
+int l_longitud(tLista l)
+{
+    if(l->siguiente == NULL) {
+        return 0;
+    }
+    return 1 + l_longitud(l->siguiente);
+}

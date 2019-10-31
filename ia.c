@@ -62,10 +62,11 @@ void proximo_movimiento(tBusquedaAdversaria b, int resultado_esperado, int * x, 
     tPosicion posFin = l_fin(hijos);
 
     while(pos != posFin && encontre == 0){
-        actual = l_recuperar(hijos,pos);
+        actual = l_recuperar(hijos, pos);
         if(actual->utilidad == resultado_esperado){
             encontre = 1;
         }
+        pos = l_siguiente(hijos, pos);
     }
     diferencia_estados(raiz,actual, x, y);
 }
@@ -106,19 +107,19 @@ static void crear_sucesores_min_max(tArbol a, tNodo n, int es_max, int alpha, in
     tEstado estadoHijo;
     tLista sucesores;
     int mejor_valor_sucesores;
-    tPosicion posFin;
     tNodo nodo;
     tLista hijos;
     tPosicion hijo;
     tPosicion hijoFin;
+    int longitud;
 
     estado = a_recuperar(a,n);
     if(!(estado->utilidad == IA_EMPATA_MAX || estado->utilidad == IA_GANA_MAX || estado->utilidad == IA_PIERDE_MAX)){
         if(es_max == 1){
             mejor_valor_sucesores = IA_INFINITO_NEG;
             sucesores = estados_sucesores(estado, jugador_max);
-            posFin = l_fin(sucesores);
-            while(l_primera(sucesores) != posFin){
+            longitud = l_longitud(sucesores);
+            while(longitud > 0){
                 nodo = a_insertar(a, n, NULL, l_recuperar(sucesores, l_primera(sucesores)));
                 crear_sucesores_min_max(a, nodo, 0, alpha, beta, jugador_max, jugador_min);
                 l_eliminar(sucesores, l_primera(sucesores),no_eliminar_ia);
@@ -130,16 +131,18 @@ static void crear_sucesores_min_max(tArbol a, tNodo n, int es_max, int alpha, in
                     if(estadoHijo->utilidad > mejor_valor_sucesores){
                         mejor_valor_sucesores = estadoHijo->utilidad;
                     }
+                    hijo = l_siguiente(hijos, hijo);
                 }
                 estado->utilidad = mejor_valor_sucesores;
+                longitud--;
             }
             l_destruir(&sucesores, no_eliminar_ia);
         }
         else{
             mejor_valor_sucesores = IA_INFINITO_POS;
             sucesores = estados_sucesores(estado, jugador_min);
-            posFin = l_fin(sucesores);
-            while(l_primera(sucesores) != posFin){
+            longitud = l_longitud(sucesores);
+            while(longitud > 0){
                 nodo = a_insertar(a, n, NULL, l_recuperar(sucesores, l_primera(sucesores)));
                 crear_sucesores_min_max(a, nodo, 1, alpha, beta, jugador_max, jugador_min);
                 l_eliminar(sucesores, l_primera(sucesores), no_eliminar_ia);
@@ -151,8 +154,10 @@ static void crear_sucesores_min_max(tArbol a, tNodo n, int es_max, int alpha, in
                     if(estadoHijo->utilidad < mejor_valor_sucesores){
                         mejor_valor_sucesores = estadoHijo->utilidad;
                     }
+                    hijo = l_siguiente(hijos, hijo);
                 }
                 estado->utilidad = mejor_valor_sucesores;
+                longitud--;
             }
             l_destruir(&sucesores, no_eliminar_ia);
         }
