@@ -8,7 +8,7 @@
 static void ejecutar_min_max(tBusquedaAdversaria b);
 static void crear_sucesores_min_max(tArbol a, tNodo n, int es_max, int alpha, int beta, int jugador_max, int jugador_min);
 static int valor_utilidad(tEstado e, int jugador_max);
-static tLista estados_sucesores(tEstado e, int ficha_jugador, int jugador_max);
+static tLista estados_sucesores(tEstado e, int ficha_jugador);
 static void diferencia_estados(tEstado anterior, tEstado nuevo, int * x, int * y);
 static tEstado clonar_estado(tEstado e);
 
@@ -112,10 +112,11 @@ static void crear_sucesores_min_max(tArbol a, tNodo n, int es_max, int alpha, in
     int longitud;
 
     estado = a_recuperar(a,n);
+	estado->utilidad = valor_utilidad(estado, jugador_max);
     if(!(estado->utilidad == IA_EMPATA_MAX || estado->utilidad == IA_GANA_MAX || estado->utilidad == IA_PIERDE_MAX)){
         if(es_max == 1){
             mejor_valor_sucesores = IA_INFINITO_NEG;
-            sucesores = estados_sucesores(estado, jugador_max, jugador_max);
+            sucesores = estados_sucesores(estado, jugador_max);
             longitud = l_longitud(sucesores);
             while(longitud > 0){
                 nodo = a_insertar(a, n, NULL, l_recuperar(sucesores, l_primera(sucesores)));
@@ -138,7 +139,7 @@ static void crear_sucesores_min_max(tArbol a, tNodo n, int es_max, int alpha, in
         }
         else{
             mejor_valor_sucesores = IA_INFINITO_POS;
-            sucesores = estados_sucesores(estado, jugador_min, jugador_max);
+            sucesores = estados_sucesores(estado, jugador_min);
             longitud = l_longitud(sucesores);
             while(longitud > 0){
                 nodo = a_insertar(a, n, NULL, l_recuperar(sucesores, l_primera(sucesores)));
@@ -217,7 +218,7 @@ estados_sucesores(estado, ficha) retornaría dos listas L1 y L2 tal que:
 - L1 y L2 tienen exactamente los mismos estados sucesores de ESTADO a partir de jugar FICHA.
 - El orden de los estado en L1 posiblemente sea diferente al orden de los estados en L2.
 **/
-static tLista estados_sucesores(tEstado e, int ficha_jugador, int jugador_max){
+static tLista estados_sucesores(tEstado e, int ficha_jugador){
     int i, j;
     tEstado eNuevo;
     tLista lista;
@@ -228,7 +229,6 @@ static tLista estados_sucesores(tEstado e, int ficha_jugador, int jugador_max){
             if (e->grilla[i][j] == 0) {
                 eNuevo = clonar_estado(e);
                 eNuevo->grilla[i][j] = ficha_jugador;
-                eNuevo->utilidad = valor_utilidad(eNuevo, jugador_max);
                 l_insertar(lista, l_primera(lista), eNuevo);
             }
         }
