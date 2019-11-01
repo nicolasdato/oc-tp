@@ -35,9 +35,27 @@ void dibujar_tablero(struct tablero *tablero)
 int main()
 {
     int opcion = 1, modo, turno, x, y;
-    char nombre_1[1000], nombre_2[1000];
+    char nombre_1[50], nombre_2[50];
     tPartida partida;
     tBusquedaAdversaria busqueda;
+
+    /*nueva_partida(&partida, PART_MODO_USUARIO_VS_AGENTE_IA, PART_JUGADOR_1, "a", "b");
+
+    nuevo_movimiento(partida, 0, 0);
+    nuevo_movimiento(partida, 0, 1);
+    nuevo_movimiento(partida, 0, 2);
+    nuevo_movimiento(partida, 1, 2);
+    nuevo_movimiento(partida, 1, 0);
+    nuevo_movimiento(partida, 2, 0);
+    nuevo_movimiento(partida, 1, 1);
+    nuevo_movimiento(partida, 2, 2);
+
+    dibujar_tablero(partida->tablero);
+    crear_busqueda_adversaria(&busqueda, partida);
+    proximo_movimiento(busqueda, IA_GANA_MAX, &x, &y);
+    destruir_busqueda_adversaria(&busqueda);
+    printf("La IA pone ficha en %d,%d\n", x, y);
+    return 0;*/
 
     while(opcion == 1){
         printf("bienvenido, presione 1- si desea jugar, 2- si de desea salir\n");

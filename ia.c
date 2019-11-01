@@ -38,9 +38,8 @@ void crear_busqueda_adversaria(tBusquedaAdversaria * b, tPartida p){
     estado->utilidad = IA_NO_TERMINO;
 
     // Inicializa los valores que representarán a los jugadores MAX y MIN respectivamente.
-    (*b)->jugador_max = p->turno_de;
-    (*b)->jugador_min = (p->turno_de == PART_JUGADOR_1) ? PART_JUGADOR_2 : PART_JUGADOR_1;
-
+    (*b)->jugador_max = (p->turno_de == PART_JUGADOR_2) ? 2 : 1;
+    (*b)->jugador_min = (p->turno_de == PART_JUGADOR_1) ? 2 : 1;
     // Inicializa un árbol para la búsqueda adversaria inicialmente vacío.
     crear_arbol(&((*b)->arbol_busqueda));
 
@@ -62,7 +61,7 @@ void proximo_movimiento(tBusquedaAdversaria b, int resultado_esperado, int * x, 
     tPosicion posFin = l_fin(hijos);
 
     while(pos != posFin && encontre == 0){
-        actual = l_recuperar(hijos, pos);
+        actual = a_recuperar(b->arbol_busqueda, l_recuperar(hijos, pos));
         if(actual->utilidad == resultado_esperado){
             encontre = 1;
         }
@@ -94,7 +93,6 @@ static void ejecutar_min_max(tBusquedaAdversaria b){
 }
 
 /**
->>>>>  A IMPLEMENTAR   <<<<<
 Implementa la estrategia del algoritmo Min-Max con podas Alpha-Beta, a partir del estado almacenado en N.
 - A referencia al árbol de búsqueda adversaria.
 - N referencia al nodo a partir del cual se construye el subárbol de búsqueda adversaria.
@@ -123,19 +121,19 @@ static void crear_sucesores_min_max(tArbol a, tNodo n, int es_max, int alpha, in
                 nodo = a_insertar(a, n, NULL, l_recuperar(sucesores, l_primera(sucesores)));
                 crear_sucesores_min_max(a, nodo, 0, alpha, beta, jugador_max, jugador_min);
                 l_eliminar(sucesores, l_primera(sucesores),no_eliminar_ia);
-                hijos = a_hijos(a, nodo);
-                hijo = l_primera(hijos);
-                hijoFin = l_fin(hijos);
-                while(hijo != hijoFin){
-                    estadoHijo = l_recuperar(hijos, hijo);
-                    if(estadoHijo->utilidad > mejor_valor_sucesores){
-                        mejor_valor_sucesores = estadoHijo->utilidad;
-                    }
-                    hijo = l_siguiente(hijos, hijo);
-                }
-                estado->utilidad = mejor_valor_sucesores;
                 longitud--;
             }
+            hijos = a_hijos(a, n);
+            hijo = l_primera(hijos);
+            hijoFin = l_fin(hijos);
+            while(hijo != hijoFin){
+                estadoHijo = a_recuperar(a, l_recuperar(hijos, hijo));
+                if(estadoHijo->utilidad > mejor_valor_sucesores){
+                    mejor_valor_sucesores = estadoHijo->utilidad;
+                }
+                hijo = l_siguiente(hijos, hijo);
+            }
+            estado->utilidad = mejor_valor_sucesores;
             l_destruir(&sucesores, no_eliminar_ia);
         }
         else{
@@ -146,19 +144,19 @@ static void crear_sucesores_min_max(tArbol a, tNodo n, int es_max, int alpha, in
                 nodo = a_insertar(a, n, NULL, l_recuperar(sucesores, l_primera(sucesores)));
                 crear_sucesores_min_max(a, nodo, 1, alpha, beta, jugador_max, jugador_min);
                 l_eliminar(sucesores, l_primera(sucesores), no_eliminar_ia);
-                hijos = a_hijos(a, nodo);
-                hijo = l_primera(hijos);
-                hijoFin = l_fin(hijos);
-                while(hijo != hijoFin){
-                    estadoHijo = l_recuperar(hijos, hijo);
-                    if(estadoHijo->utilidad < mejor_valor_sucesores){
-                        mejor_valor_sucesores = estadoHijo->utilidad;
-                    }
-                    hijo = l_siguiente(hijos, hijo);
-                }
-                estado->utilidad = mejor_valor_sucesores;
                 longitud--;
             }
+            hijos = a_hijos(a, n);
+            hijo = l_primera(hijos);
+            hijoFin = l_fin(hijos);
+            while(hijo != hijoFin){
+                estadoHijo = a_recuperar(a, l_recuperar(hijos, hijo));
+                if(estadoHijo->utilidad < mejor_valor_sucesores){
+                    mejor_valor_sucesores = estadoHijo->utilidad;
+                }
+                hijo = l_siguiente(hijos, hijo);
+            }
+            estado->utilidad = mejor_valor_sucesores;
             l_destruir(&sucesores, no_eliminar_ia);
         }
     }
