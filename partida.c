@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <math.h>
+#include <string.h>
 
 void nueva_partida(tPartida * p, int modo_partida, int comienza, char * j1_nombre, char * j2_nombre)
 {
@@ -39,7 +40,7 @@ void nueva_partida(tPartida * p, int modo_partida, int comienza, char * j1_nombr
 
 int nuevo_movimiento(tPartida p, int mov_x, int mov_y)
 {
-    int **grilla;
+    int grilla[3][3];
     int i, j;
     int gano;
     int no_hay_empate = 0;
@@ -57,10 +58,10 @@ int nuevo_movimiento(tPartida p, int mov_x, int mov_y)
             p->tablero->grilla[mov_x][mov_y] = 2;
             p->turno_de = PART_JUGADOR_1;
         }
-        grilla = p->tablero->grilla;
+        memcpy(grilla, p->tablero->grilla, sizeof(grilla));
         gano = 0;
-        if(mov_x != 1 && mov_y !=1){
-            if(grilla[1][1] == grilla [mov_x][mov_y] && grilla[1][1] == grilla[fabs(mov_x-2)][fabs(mov_y-2)]){
+        /*if(mov_x != 1 && mov_y !=1){
+            if(grilla[1][1] == grilla [mov_x][mov_y] && grilla[1][1] == grilla[abs(mov_x-2)][abs(mov_y-2)]){
                 gano = grilla[1][1];
             }
             else{
@@ -93,8 +94,8 @@ int nuevo_movimiento(tPartida p, int mov_x, int mov_y)
                     }
                 }
             }
-        }
-        /*for (i = 0; i < 3; i++){
+        }*/
+        for (i = 0; i < 3; i++){
             if(grilla[i][0] == grilla[i][1] && grilla[i][1] == grilla[i][2]){
                 gano = grilla[i][0];
             }
@@ -109,7 +110,7 @@ int nuevo_movimiento(tPartida p, int mov_x, int mov_y)
         }
         if(grilla[0][2] == grilla[1][1] && grilla[1][1] == grilla[2][0]){
             gano = grilla[0][2];
-        }*/
+        }
         if(gano == 1){
             p->estado = PART_GANA_JUGADOR_1;
         }

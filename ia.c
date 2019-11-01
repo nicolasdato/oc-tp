@@ -8,11 +8,11 @@
 static void ejecutar_min_max(tBusquedaAdversaria b);
 static void crear_sucesores_min_max(tArbol a, tNodo n, int es_max, int alpha, int beta, int jugador_max, int jugador_min);
 static int valor_utilidad(tEstado e, int jugador_max);
-static tLista estados_sucesores(tEstado e, int ficha_jugador);
+static tLista estados_sucesores(tEstado e, int ficha_jugador, int jugador_max);
 static void diferencia_estados(tEstado anterior, tEstado nuevo, int * x, int * y);
 static tEstado clonar_estado(tEstado e);
 
-void no_eliminar(tElemento elemento)
+void no_eliminar_ia(tElemento elemento)
 {
 }
 
@@ -38,9 +38,8 @@ void crear_busqueda_adversaria(tBusquedaAdversaria * b, tPartida p){
     estado->utilidad = IA_NO_TERMINO;
 
     // Inicializa los valores que representarán a los jugadores MAX y MIN respectivamente.
-    (*b)->jugador_max = p->turno_de;
-    (*b)->jugador_min = (p->turno_de == PART_JUGADOR_1) ? PART_JUGADOR_2 : PART_JUGADOR_1;
-
+    (*b)->jugador_max = (p->turno_de == PART_JUGADOR_2) ? 2 : 1;
+    (*b)->jugador_min = (p->turno_de == PART_JUGADOR_1) ? 2 : 1;
     // Inicializa un árbol para la búsqueda adversaria inicialmente vacío.
     crear_arbol(&((*b)->arbol_busqueda));
 
@@ -51,15 +50,28 @@ void crear_busqueda_adversaria(tBusquedaAdversaria * b, tPartida p){
     ejecutar_min_max((*b));
 }
 
-/**
->>>>>  A IMPLEMENTAR   <<<<<
-*/
-void proximo_movimiento(tBusquedaAdversaria b, int resultado_esperado, int * x, int * y){
 
+void proximo_movimiento(tBusquedaAdversaria b, int resultado_esperado, int * x, int * y){
+    tEstado raiz = a_recuperar(b->arbol_busqueda,a_raiz(b->arbol_busqueda));
+    tEstado actual;
+    int encontre = 0;
+    resultado_esperado = raiz->utilidad;
+    tLista hijos = a_hijos(b->arbol_busqueda,a_raiz(b->arbol_busqueda));
+    tPosicion pos = l_primera(hijos);
+    tPosicion posFin = l_fin(hijos);
+
+    while(pos != posFin && encontre == 0){
+        actual = a_recuperar(b->arbol_busqueda, l_recuperar(hijos, pos));
+        if(actual->utilidad == resultado_esperado){
+            encontre = 1;
+        }
+        pos = l_siguiente(hijos, pos);
+    }
+    diferencia_estados(raiz,actual, x, y);
 }
 
 void destruir_busqueda_adversaria(tBusquedaAdversaria * b){
-    a_destruir((*b)->arbol_busqueda, free);
+    a_destruir(&(*b)->arbol_busqueda, free);
     free(*b);
 }
 
@@ -81,7 +93,6 @@ static void ejecutar_min_max(tBusquedaAdversaria b){
 }
 
 /**
->>>>>  A IMPLEMENTAR   <<<<<
 Implementa la estrategia del algoritmo Min-Max con podas Alpha-Beta, a partir del estado almacenado en N.
 - A referencia al árbol de búsqueda adversaria.
 - N referencia al nodo a partir del cual se construye el subárbol de búsqueda adversaria.
@@ -94,57 +105,62 @@ static void crear_sucesores_min_max(tArbol a, tNodo n, int es_max, int alpha, in
     tEstado estadoHijo;
     tLista sucesores;
     int mejor_valor_sucesores;
-    tPosicion posFin;
     tNodo nodo;
     tLista hijos;
     tPosicion hijo;
     tPosicion hijoFin;
+    int longitud;
 
     estado = a_recuperar(a,n);
     if(!(estado->utilidad == IA_EMPATA_MAX || estado->utilidad == IA_GANA_MAX || estado->utilidad == IA_PIERDE_MAX)){
-        if(es_max){
+        if(es_max == 1){
             mejor_valor_sucesores = IA_INFINITO_NEG;
-            sucesores = estados_sucesores(estado, jugador_max);
-            posFin = l_fin(sucesores);
-            while(l_primera(sucesores) != posFin){
-                nodo = a_insertar(a, n, NULL, l_recuperar(sucesores, l_primera(sucesores));
+            sucesores = estados_sucesores(estado, jugador_max, jugador_max);
+            longitud = l_longitud(sucesores);
+            while(longitud > 0){
+                nodo = a_insertar(a, n, NULL, l_recuperar(sucesores, l_primera(sucesores)));
                 crear_sucesores_min_max(a, nodo, 0, alpha, beta, jugador_max, jugador_min);
-                l_eliminar(sucesores, l_primera(sucesores), no_eliminar);
-                hijos = a_hijos(a, nodo);
-                hijo = l_primera(hijos);
-                hijoFin = l_fin(hijos);
-                while(hijo != hijoFin){
-                    estadoHijo = l_recuperar(hijos, hijo);
-                    if(estadoHijo->utilidad > mejor_valor_sucesores){
-                        mejor_valor_sucesores = estadoHijo->utilidad;
-                    }
-                }
-                estado->utilidad = mejor_valor_sucesores;
+                l_eliminar(sucesores, l_primera(sucesores),no_eliminar_ia);
+                longitud--;
             }
-            l_destruir(sucesores, no_eliminar);
+            hijos = a_hijos(a, n);
+            hijo = l_primera(hijos);
+            hijoFin = l_fin(hijos);
+            while(hijo != hijoFin){
+                estadoHijo = a_recuperar(a, l_recuperar(hijos, hijo));
+                if(estadoHijo->utilidad > mejor_valor_sucesores){
+                    mejor_valor_sucesores = estadoHijo->utilidad;
+                }
+                hijo = l_siguiente(hijos, hijo);
+            }
+            estado->utilidad = mejor_valor_sucesores;
+            l_destruir(&sucesores, no_eliminar_ia);
         }
         else{
             mejor_valor_sucesores = IA_INFINITO_POS;
-            sucesores = estados_sucesores(estado, jugador_min);
-            posFin = l_fin(sucesores);
-            while(l_primera(sucesores) != posFin){
-                nodo = a_insertar(a, n, NULL, l_recuperar(sucesores, l_primera(sucesores));
+            sucesores = estados_sucesores(estado, jugador_min, jugador_max);
+            longitud = l_longitud(sucesores);
+            while(longitud > 0){
+                nodo = a_insertar(a, n, NULL, l_recuperar(sucesores, l_primera(sucesores)));
                 crear_sucesores_min_max(a, nodo, 1, alpha, beta, jugador_max, jugador_min);
-                l_eliminar(sucesores, l_primera(sucesores), no_eliminar);
-                hijos = a_hijos(a, nodo);
-                hijo = l_primera(hijos);
-                hijoFin = l_fin(hijos);
-                while(hijo != hijoFin){
-                    estadoHijo = l_recuperar(hijos, hijo);
-                    if(estadoHijo->utilidad < mejor_valor_sucesores){
-                        mejor_valor_sucesores = estadoHijo->utilidad;
-                    }
-                }
-                estado->utilidad = mejor_valor_sucesores;
+                l_eliminar(sucesores, l_primera(sucesores), no_eliminar_ia);
+                longitud--;
             }
-            l_destruir(sucesores, no_eliminar);
+            hijos = a_hijos(a, n);
+            hijo = l_primera(hijos);
+            hijoFin = l_fin(hijos);
+            while(hijo != hijoFin){
+                estadoHijo = a_recuperar(a, l_recuperar(hijos, hijo));
+                if(estadoHijo->utilidad < mejor_valor_sucesores){
+                    mejor_valor_sucesores = estadoHijo->utilidad;
+                }
+                hijo = l_siguiente(hijos, hijo);
+            }
+            estado->utilidad = mejor_valor_sucesores;
+            l_destruir(&sucesores, no_eliminar_ia);
         }
     }
+
 }
 
 /**
@@ -156,7 +172,7 @@ Computa el valor de utilidad correspondiente al estado E, y la ficha correspondi
 **/
 static int valor_utilidad(tEstado e, int jugador_max)
 {
-    int i, j;
+    int i;
     int hay_vacios = 0;
     int gano = 0;
 
@@ -201,7 +217,7 @@ estados_sucesores(estado, ficha) retornaría dos listas L1 y L2 tal que:
 - L1 y L2 tienen exactamente los mismos estados sucesores de ESTADO a partir de jugar FICHA.
 - El orden de los estado en L1 posiblemente sea diferente al orden de los estados en L2.
 **/
-static tLista estados_sucesores(tEstado e, int ficha_jugador){
+static tLista estados_sucesores(tEstado e, int ficha_jugador, int jugador_max){
     int i, j;
     tEstado eNuevo;
     tLista lista;
@@ -209,10 +225,10 @@ static tLista estados_sucesores(tEstado e, int ficha_jugador){
     crear_lista(&lista);
     for(i = 0; i < 3; i++){
         for(j = 0; j < 3; j++){
-            if (e->tablero[i][j] == 0) {
+            if (e->grilla[i][j] == 0) {
                 eNuevo = clonar_estado(e);
-                eNuevo->tablero[i][j] = ficha_jugador;
-                eNuevo->utilidad = valor_utilidad(eNuevo, ficha_jugador);
+                eNuevo->grilla[i][j] = ficha_jugador;
+                eNuevo->utilidad = valor_utilidad(eNuevo, jugador_max);
                 l_insertar(lista, l_primera(lista), eNuevo);
             }
         }
@@ -234,7 +250,7 @@ static tEstado clonar_estado(tEstado e){
     if(toReturn == NULL){
         exit(IA_ERROR_MEMORIA);
     }
-    toReturn->utilidad = e->utilidad;
+    //toReturn->utilidad = e->utilidad;
     for(i = 0; i < 3; i++){
         for(j = 0; j < 3; j++){
             toReturn->grilla[i][j] = e->grilla[i][j];
@@ -252,7 +268,7 @@ static void diferencia_estados(tEstado anterior, tEstado nuevo, int * x, int * y
     int i,j, hallado = 0;
     for(i=0; i<3 && !hallado; i++){
         for(j=0; j<3 && !hallado; j++){
-            if (anterior->tablero[i][j] != nuevo->tablero[i][j]){
+            if (anterior->grilla[i][j] != nuevo->grilla[i][j]){
                 *x = i;
                 *y = j;
                 hallado = 1;
