@@ -1,10 +1,10 @@
 # depslib dependency file v1.0
-1570760065 source:c:\users\nio\desktop\uns-oc\tp1\main.c
+1572727565 source:c:\users\nio\desktop\uns-oc\tp1\main.c
 	<stdio.h>
 	<stdlib.h>
-	"arbol.h"
+	"ia.h"
 
-1568345926 c:\users\nio\desktop\uns-oc\tp1\lista.h
+1572577026 c:\users\nio\desktop\uns-oc\tp1\lista.h
 
 1568941443 source:c:\users\nio\desktop\uns-oc\tp1\lista.c
 	<stdlib.h>
@@ -16,4 +16,23 @@
 
 1569549206 c:\users\nio\desktop\uns-oc\tp1\arbol.h
 	"lista.h"
+
+1572727565 source:c:\users\nio\desktop\uns-oc\tp1\ia.c
+	<stdlib.h>
+	"lista.h"
+	"arbol.h"
+	"ia.h"
+
+1572577026 c:\users\nio\desktop\uns-oc\tp1\ia.h
+	"arbol.h"
+	"partida.h"
+
+1572577026 c:\users\nio\desktop\uns-oc\tp1\partida.h
+
+1572727565 source:c:\users\nio\desktop\uns-oc\tp1\partida.c
+	"partida.h"
+	<stdlib.h>
+	<time.h>
+	<math.h>
+	<string.h>
 
