@@ -20,7 +20,8 @@ void n_eliminar(tNodo n, void (*fEliminar)(tElemento))
         n_eliminar(nodo, fEliminar);        //LLamo con cada hijo a n_eliminar
         pos = l_siguiente(n->hijos, pos);
     }
-    l_destruir(&(n->hijos), free);          //Elimino la lista de hijos del nodo, liberando de momoria con free todos los nodos en la lista
+    l_destruir(&(n->hijos), free);          //Elimino la lista de hijos del nodo, liberando de momoria con free todos los nodos en la lista.
+                                            //Se utiliza free porque aca se necesita eliminar los tNodo hijos. los tElementos de la lista ya fueron eliminados antes.
 }
 
 void crear_arbol(tArbol * a){
