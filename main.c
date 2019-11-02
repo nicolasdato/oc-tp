@@ -2,6 +2,9 @@
 #include <stdlib.h>
 #include "ia.h"
 
+/**
+ Metodo auxiliar para la muestra del tablero por consola
+**/
 void dibujar_tablero(struct tablero *tablero)
 {
     int i, j;
@@ -38,26 +41,7 @@ int main()
     char nombre_1[50], nombre_2[50];
     tPartida partida;
     tBusquedaAdversaria busqueda;
-
-    /*nueva_partida(&partida, PART_MODO_USUARIO_VS_AGENTE_IA, PART_JUGADOR_1, "a", "b");
-
-    nuevo_movimiento(partida, 0, 0);
-    nuevo_movimiento(partida, 0, 1);
-    nuevo_movimiento(partida, 0, 2);
-    nuevo_movimiento(partida, 1, 2);
-    nuevo_movimiento(partida, 1, 0);
-    nuevo_movimiento(partida, 2, 0);
-    nuevo_movimiento(partida, 1, 1);
-    nuevo_movimiento(partida, 2, 2);
-
-    dibujar_tablero(partida->tablero);
-    crear_busqueda_adversaria(&busqueda, partida);
-    proximo_movimiento(busqueda, IA_GANA_MAX, &x, &y);
-    destruir_busqueda_adversaria(&busqueda);
-    printf("La IA pone ficha en %d,%d\n", x, y);
-    return 0;
-    */
-    while(opcion == 1){
+    while(opcion == 1){             //Aparece el menu con las opciones de juego
         printf("bienvenido, presione 1- si desea jugar, 2- si de desea salir\n");
         scanf("%d",&opcion);
         if(opcion == 1){
@@ -70,7 +54,7 @@ int main()
             printf("2-Jugador 2\n");
             printf("3-Jugador aleatorio\n");
             scanf("%d",&turno);
-            if(modo == 1){
+            if(modo == 1){                              //Se guardan las opciones seleccionadas por el usuario
                 modo = PART_MODO_USUARIO_VS_USUARIO;
             }
             else{
@@ -96,16 +80,16 @@ int main()
             scanf("%s", nombre_1);
             printf("Ingrese el nombre del jugador 2, sin espacios: ");
             scanf("%s", nombre_2);
-            nueva_partida(&partida, modo, turno, nombre_1, nombre_2);
-            dibujar_tablero(partida->tablero);
-            while(partida->estado == PART_EN_JUEGO){
+            nueva_partida(&partida, modo, turno, nombre_1, nombre_2);   //Se crea una nueva partida
+            dibujar_tablero(partida->tablero);                          //Y se dibuja el tablero vacio
+            while(partida->estado == PART_EN_JUEGO){                    //Mientras se este en juago
                 if(partida->turno_de == PART_JUGADOR_1){
                     printf("Es el turno de %s\n", partida->nombre_jugador_1);
                 }
                 else{
                      printf("Es el turno de %s\n", partida->nombre_jugador_2);
                 }
-                if((partida->turno_de == PART_JUGADOR_1 && modo != PART_MODO_AGENTE_IA_VS_AGENTE_IA) || (partida->turno_de == PART_JUGADOR_2 && modo == PART_MODO_USUARIO_VS_USUARIO)){
+                if((partida->turno_de == PART_JUGADOR_1 && modo != PART_MODO_AGENTE_IA_VS_AGENTE_IA) || (partida->turno_de == PART_JUGADOR_2 && modo == PART_MODO_USUARIO_VS_USUARIO)){//En caso de que juega el usuario
                     x = -1;
                     y = -1;
                     while(x < 0 || x > 2 || y < 0 || y > 2){
@@ -114,15 +98,15 @@ int main()
                     }
                 }
                 else{
-                    crear_busqueda_adversaria(&busqueda, partida);
-                    proximo_movimiento(busqueda, IA_GANA_MAX, &x, &y);
-                    destruir_busqueda_adversaria(&busqueda);
+                    crear_busqueda_adversaria(&busqueda, partida);      //Se crea la busqueda adversaria
+                    proximo_movimiento(busqueda, IA_GANA_MAX, &x, &y);  //Se calcula el mejor movimiento para Max
+                    destruir_busqueda_adversaria(&busqueda);            //Luego se destruye la busqueda
                     printf("La IA pone ficha en %d,%d\n", x, y);
                 }
-                nuevo_movimiento(partida, x, y);
-                dibujar_tablero(partida->tablero);
+                nuevo_movimiento(partida, x, y);                        //Se realiza el nuevo movimiento
+                dibujar_tablero(partida->tablero);  //Se dibuja el estado actual del tablero despues del movimiento
             }
-            switch(partida->estado){
+            switch(partida->estado){    //Se analisa el estado de la partida
                 case PART_EMPATE:
                     printf("Empate!\n");
                     break;

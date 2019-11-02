@@ -1,10 +1,12 @@
 #include <stdlib.h>
 #include "lista.h"
 
+//Lista simplemente enlazada con posicion indirecta y puntero a un nodo centinela
+
 void crear_lista(tLista * l)
 {
-    (*l) = malloc(sizeof(struct celda));
-    (*l)->elemento = NULL;
+    (*l) = malloc(sizeof(struct celda)); // Se reserva espacio en memoria para la lista con su primer elemento, centinela
+    (*l)->elemento = NULL;               // El primer elemento en NULL, el cual seria el del nodo centinela
     (*l)->siguiente = NULL;
 }
 
@@ -15,9 +17,9 @@ void crear_lista(tLista * l)
 **/
 void l_insertar(tLista l, tPosicion p, tElemento e)
 {
-    struct celda *celda = malloc(sizeof(struct celda));
+    struct celda *celda = malloc(sizeof(struct celda)); // Se reserva espacio para el nodo en el cual se guardara el elemento
     celda->elemento = e;
-    celda->siguiente = p->siguiente;
+    celda->siguiente = p->siguiente;                     // El siguiente de la celda es el siguiente a la posicion al estar trabajando con posicion indirecta
     p->siguiente = celda;
 }
 
@@ -29,12 +31,12 @@ void l_insertar(tLista l, tPosicion p, tElemento e)
 void l_eliminar(tLista l, tPosicion p, void (*fEliminar)(tElemento))
 {
     struct celda *aux;
-    if(p->siguiente == NULL)
+    if(p->siguiente == NULL)                    //En caso de que la posicion == fin
         exit(LST_POSICION_INVALIDA);
-    fEliminar((p->siguiente)->elemento);
-    aux = p->siguiente;
-    p->siguiente = p->siguiente->siguiente;
-    free(aux);
+    fEliminar((p->siguiente)->elemento);        //Se elimina el elemento con la funcion pasada por parametro
+    aux = p->siguiente;                         //Se apunta al nodo para asi despues eliminarlo
+    p->siguiente = p->siguiente->siguiente;     //El nodo anterior apunta al nodo siguiente al actual
+    free(aux);                                  //Se libera la celda de la memoria
 }
 
 /**
@@ -43,13 +45,13 @@ void l_eliminar(tLista l, tPosicion p, void (*fEliminar)(tElemento))
 void l_destruir(tLista * l, void (*fEliminar)(tElemento))
 {
     struct celda *aux;
-    while((*l)->siguiente != NULL){
-        aux = (*l)->siguiente;
-        fEliminar(aux->elemento);
-        (*l)->siguiente = aux->siguiente;
-        free(aux);
+    while((*l)->siguiente != NULL){             //Mientas existan celdas
+        aux = (*l)->siguiente;                  //Apunto al siguiente de la lista
+        fEliminar(aux->elemento);               //Se elimina el elemento con la funcion pasada por parametro
+        (*l)->siguiente = aux->siguiente;       //Se cambia los siguientes
+        free(aux);                              //Y se lo elemina de la memoria
     }
-    free(*l);
+    free(*l);                                   //Por ultimo se elimina el espacio en memoria reservado para la lista
 }
 
  /**
@@ -58,9 +60,9 @@ void l_destruir(tLista * l, void (*fEliminar)(tElemento))
 **/
 tElemento l_recuperar(tLista l, tPosicion p)
 {
-    if(p->siguiente == NULL)
+    if(p->siguiente == NULL)                //En caso de que la posicion == fin
         exit(LST_POSICION_INVALIDA);
-    return p->siguiente->elemento;
+    return p->siguiente->elemento;          //Al estar en posicion indirecta se retorna el elemento del nodo siguiente a la posicion
 }
 
 /**
@@ -69,7 +71,7 @@ tElemento l_recuperar(tLista l, tPosicion p)
 **/
 tPosicion l_primera(tLista l)
 {
-    return l;
+    return l;  //La primera posicion es a la que apunta la lista
 }
 
 /**
@@ -78,9 +80,9 @@ tPosicion l_primera(tLista l)
 **/
 tPosicion l_siguiente(tLista l, tPosicion p)
 {
-        if(p->siguiente == NULL)
+        if(p->siguiente == NULL)                //En caso de que posicion == fin
             exit(LST_NO_EXISTE_SIGUIENTE);
-        return p->siguiente;
+        return p->siguiente;                    //Se retorna la posicion siguiente
 }
 
 /**
@@ -107,9 +109,9 @@ tPosicion l_anterior(tLista l, tPosicion p)
 tPosicion l_ultima(tLista l)
 {
     struct celda *auxiliar = l;
-    if(l->siguiente == NULL)
+    if(l->siguiente == NULL)                                //Si noy hay siguiente se retorna la lista, es decir, no hay elementos
         return l;
-    while ((auxiliar->siguiente)->siguiente != NULL) {
+    while ((auxiliar->siguiente)->siguiente != NULL) {      //Mientas que existan siguientas avanzo hasta la ultima posicion
         auxiliar = auxiliar->siguiente;
     }
     return auxiliar;
@@ -123,7 +125,7 @@ tPosicion l_fin(tLista l)
 {
     struct celda *auxiliar = l;
 
-    while (auxiliar->siguiente != NULL) {
+    while (auxiliar->siguiente != NULL) {       //Si noy hay siguiente se retorna la lista, es decir, no hay elementos
         auxiliar = auxiliar->siguiente;
     }
     return auxiliar;
@@ -134,8 +136,8 @@ tPosicion l_fin(tLista l)
 **/
 int l_longitud(tLista l)
 {
-    if(l->siguiente == NULL) {
+    if(l->siguiente == NULL) {              //Si no puedo seguir avansando 0
         return 0;
     }
-    return 1 + l_longitud(l->siguiente);
+    return 1 + l_longitud(l->siguiente);    //Si pude avansar 1 + la longitud de la lista menos la posocion actual
 }
