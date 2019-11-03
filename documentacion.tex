@@ -1,7 +1,8 @@
-\documentclass[12pt,twocolum,a4paper]{article}
+\documentclass[12pt,a4paper]{article}
 \usepackage[utf8]{inputenc}
 \usepackage[spanish]{babel}
 \usepackage{hyperref}
+\usepackage{graphicx}
 
 \title{Documentaci\'on del proyecto de \emph{Organizaci\'on de Computadoras} - \emph{Ta-Te-Ti}}
 \author{Nicol\'as Dato y Nicol\'as Medina}
@@ -112,6 +113,95 @@
 \end{itemize}
 
 \section{Descripcion de procesos y servicios ofrecidos por el sistema}
+\subsection{Invocaci\'on del programa}
+Para ejecutar el programa s\'olo basta con ejecutar \emph{tp1.exe}. No espera ning\'un par\'ametro.
+
+\subsection{TDA LISTA}
+\subsubsection{Creaci\'on de la lista}
+La lista se crea en la funci\'on \emph{crear\_lista(tLista *l)}, la cual crear\'a en $l$ una nueva estructura y la inicializar\'a con los valores de una lista vac\'ia, es decir una lista con el elemento centinela pero sin m\'as elementos.
+
+\subsubsection{Insertar elemento}
+Para insertar elemento est\'a la funci\'on \emph{void l\_insertar(tLista l, tPosicion p, tElemento e)}, esta funci\'on crea una nueva celda y la inserta en la posici\'on indicada. Dado que se trabaja con posici\'on indirecta, para insertar se tiene que agregar la celda nueva en \emph{p.siguiente} para que al recuperar el elemento en la posici\'on $p$ se obtenga el elemento insertado. El anterior elemento en $p$ pasar\'a a ser el siguiente del nodo insertado.
+
+\subsubsection{Eliminar elemento y destrucci\'on de la lista}
+Las funciones \emph{void l\_destruir(tLista * l, void (*fEliminar)(tElemento))} y \emph{void l\_eliminar(tLista l, tPosicion p, void (*fEliminar)(tElemento))} destruyen la lista y eliminan un nodo, respectivamente. Al eliminar un nodo lo que se hace es eliminar \emph{p.siguiente} dado que se trabaja con posici\'on indirecta, y eliminando el elemento de la celda con $fEliminar$. En el caso de destruir la lista el procedimiento es similar, eliminando todos los elementos de la lista para luego eliminar la lista en s\'i. Los nodos y la lista se eliminan con \emph{free()}.
+
+\subsubsection{Obtener posiciones de los nodos y la longitud de la lista}
+Para obtener la primera posici\'on, la anterior y siguiente de una posic\'on, la \'ultima posici\'on y el fin de la lista se tiene las funciones \emph{tPosicion l\_primera(tLista l)}, \emph{tPosicion l\_anterior(tLista l, tPosicion p)}, \emph{tPosicion l\_siguiente(tLista l, tPosicion p)}, \emph{tPosicion l\_ultima(tLista l)}, \emph{tPosicion l\_fin(tLista l)}. Teniendo en cuenta que se trabaja con posici\'on indirecta estas funciones resultan triviales. 
+
+Para recuperar el elemento de una posici\'on se utiliza la funci\'on \emph{tElemento l\_recuperar(tLista l, tPosicion p)}
+
+La longitud de la lista se obtiene \emph{int l\_longitud(tLista l)}, una funci\'on recursiva que tiene de caso base la lista vac\'ia (longitud $0$) y sino suma $1$ por cada elemento recursivamente hasta llegar al caso base.
+
+\subsection{TDA ARBOL}
+\subsubsection{Creaci\'on del \'arbol y su ra\'iz}
+El \'arbol se crea con la funci\'on \emph{void crear\_arbol(tArbol * a)}, que va a crear un \'arbol sin ra\'iz. Para ingresarle la ra\'iz hay que llamar a \emph{void crear\_raiz(tArbol a, tElemento e)}.
+
+El \'arbol estar\'a representado como nodos, donde cada nodo tiene un puntero a su padre y tiene una lista de hijos.
+
+\subsubsection{Ingresar elemento}
+Para ingresar elementos al \'arbol, existe la funci\'on \emph{tNodo a\_insertar(tArbol a, tNodo np, tNodo nh, tElemento e)}, la cual ingresa el elemento $e$ como hijo de $np$ a la izquierda de $nh$, si $nh$ es $NULL$ entonces se ingresa como \'ultimo hijo de $np$.
+
+Al ingresar un elemento se crea un nodo nuevo y con una lista vac\'ia de hijos, en caso de que $nh$ sea $NULL$ se ingresa el nuevo nodo al final de la lista de hijos de $np$; pero si $nh$ no es $NULL$ entonces primero se busca a $nh$ entre los hijos de $np$ para poder ingresar el nuevo nodo antes de $nh$.
+
+\subsubsection{Eliminar elemento y destrucci\'on del \'arbol}
+Las funciones \emph{void a\_eliminar(tArbol a, tNodo n, void (*fEliminar)(tElemento))} y \emph{void a\_destruir(tArbol * a, void (*fEliminar)(tElemento))} eliminan un elemento y destruyen el \'arbol respectivamente.
+
+Para eliminar un elemento, hay 3 casos v\'alidos: que sea la ra\'iz sin hijos, que sea la ra\'iz con s\'olo un hijo, que no sea la ra\'iz; en todos los casos se destruye la lista de hijos y se elimina el elemento de la con $fEliminar$.
+
+En el caso de que sea una ra\'iz sin hijos, s\'olo se quita la ra\'iz del \'arbol. Cuando sea la ra\'iz con un \'unico hijo, ese elemento pasa a ser la nueva ra\'iz.
+
+Si el elemento a eliminar es un nodo que no es ra\'iz, entonces todos los hijos del nodo pasan a estar como hijos del padre, en el mismo orden y en el lugar donde estaba el nodo. Para realizar esta operaci\'on se tuvo que usar una funci\'on \emph{no\_eliminar()} que no hace nada y pasar esa funci\'on a \emph{l\_eliminar()}. Esto se debe a que se necesita quitar los elementos del nodo sin eliminarlos para poder ingresarlos como hijos del padre, pero la interface del \emph{TDA LISTA} no tiene una forma de quitar el elemento sin que se llame a una funci\'on de eliminado, entonces con \emph{no\_eliminar()} el nodo es eliminado de la lista pero sin destruir al elemento y se puede as\'i recuperar un elemento de la lista, eliminarlo de la lista sin que se elimine el elemento en si, y luego colocar el elemento recuperado en otra lista.
+
+Para la destrucci\'on de todo el \'arbol, se utiliza una funci\'on auxiliar \emph{n\_eliminar(tNodo n, void (*fEliminar)(tElemento))} que va a eliminar al elemento del nodo $n$ y luego recursivamente va a eliminar los nodos hijos de $n$ para luego destruir la lista.
+
+\subsubsection{Obtener elementos}
+Para operar con el \'arbol y obtener elementos, est\'an las funciones \emph{tNodo a\_raiz(tArbol a)}, \emph{tLista a\_hijos(tArbol a, tNodo n)} y \emph{tElemento a\_recuperar(tArbol a, tNodo n)} que van a devolver el nodo ra\'iz, una lista de \emph{tNodo} hijos de un nodo, y obtener el elemento del nodo respectivamente. Son funciones triviales.
+
+\subsubsection{Sub\'arbol}
+Se puede obtener un sub\'arbol utilizando \emph{void a\_sub\_arbol(tArbol a, tNodo n, tArbol * sa)}. Esa funci\'on va a crear un nuevo \'arbol en $sa$ donde $n$ es ra\'iz con todos sus hijos, y en el \'arbol original $a$ se quita a $n$ y sus hijos.
+
+Para realizar esto se busca al nodo $n$ en la lista de hijos de su padre, y se lo quita sin destruir al elemento (utilizando la func\'on \emph{no\_eliminar()} tal como se hac\'ia en \emph{a\_eliminar()}).
+
+\subsection{TDA PARTIDA}
+\subsubsection{Crear partida nueva y finalizarla}
+Para crear una nueva partida hay que llamar a la funci\'on \emph{void nueva\_partida(tPartida * p, int modo\_partida, int comienza, char * j1\_nombre, char * j2\_nombre)}, y se va a inicializar las estructuras con el modo de la partida, qui\'en comienza, los nombres de los jugadores y un tablero sin fichas colocadas (todas las posiciones en $0$). Si el jugador que comienza fuese aleatorio, se pide un n\'umero pseudo-aleatorio con \emph{rand()}, si el resultado es par comienza el jugador 1, sino comienza el jugador 2.
+
+Para finalizar la partida se utiliza la funci\'on \emph{finalizar\_partida(tPartida * p)}, la cual va a eliminar la memoria utilizada para la partida.
+
+\subsubsection{Realizar movimientos}
+Se pueden realizar movimientos en el tablero con la fuci\'on \emph{int nuevo\_movimiento(tPartida p, int mov\_x, int mov\_y)}, se va a corroborar que la posici\'on se encuentre vac\'ia y va a realizar la jugada colocando un $1$ para el jugador 1 y un $2$ para el jugador 2. Luego revisa el tablero para saber si con la jugada realizada hay un ganador, o es empate, o si se puede seguir jugando.
+
+\subsection{TDA IA}
+\subsubsection{Creaci\'on y destrucci\'on de b\'usqueda adversaria}
+La b\'usqueda adversaria, utilizada para saber el mejor movimiento a realizar, se crea con \\\emph{void crear\_busqueda\_adversaria(tBusquedaAdversaria * b, tPartida p)}. Se va a crear un \'arbol donde se va a ejecutar el algoritmo \emph{Min-Max}, siendo la ra\'iz del \'arbol el tablero actual y siempre arrancando a jugar como \emph{Max} para maximizar la jugada. El \'arbol se crea de tal forma de que en cada nivel se vaya alternando entre \emph{Min} y \emph{Max}, se llama recusrivamente con cada uno de los posibles movimientos a realizar y luego se buscar\'a la mejor jugada en el caso de ser \emph{Max} o la peor jugada en el caso de ser \emph{Min}. Tambi\'en se detendr\'a la b\'usqueda si se encuentra con una jugada ganadora o perdedora (seg\'un sea \emph{Max} o \emph{Min}) para no seguir procesando el \'arbol cuando no es necesario por que no podr\'a haber mejores resultados.
+
+Para destruir la b\'usqueda adversaria hay que llamar a \\\emph{void destruir\_busqueda\_adversaria(tBusquedaAdversaria * b)} que va a destruir el \'arbol y liberar la memoria utilizada.
+
+\subsubsection{Obtenci\'on del pr\'oximo movimiento}
+Una vez creada la b\'usqueda adversaria, se utiliza \\\emph{void proximo\_movimiento(tBusquedaAdversaria b, int resultado\_esperado, int * x, int * y)} para obtener el mejor movimiento. Esta funci\'on va a revisar los hijos de la ra\'iz (es decir, las posibles jugadas que se tienen a partir del estado actual) y se va a quedar con la mejor jugada de todas, luego comparando el tablero actual con el tablero de la mejor jugada se obtiene la diferencia y se indican en $x$ e $y$ las coordenadas a jugar. Dada la forma en que se crea el \'arbol para el algoritmo \emph{Min-Max}, el valor de utilidad de la ra\'iz va a ser la utilidad de la mejor jugada de sus hijos (dado que la ra\'iz es siempre \emph{Max}), por lo que buscar la mejor jugada entre los hijos es buscar al hijo que tenga la misma utilidad que la ra\'iz.
+
+\subsection{Main - programa principal}
+El programa principal primero va a pedir toda la informaci\'on de la partida (jugadores, modo, etc.) y va a crear una nueva partida. Luego va a iterar mientras no haya ganadores ni empate y va a pedir las coordenadas de la ficha al jugador y va a realizar la jugada. En caso de que sea el turno de la m\'aquina va a crear la b\'usqueda adversaria del \emph{TDA IA}, va a buscar la mejor jugada y la va a realizar.
+
+Una vez terminado el juego se pregunta al usuario si se quiere seguir jugando o si se quiere salir, pudiendo jugar nuevamente sin reiniciar el programa.
+
+\subsection{Diagrama del uso de TDAs}
+\begin{figure}[h!tbp]
+	\centering
+		\includegraphics[width=1.00\textwidth]{diagrama.jpg}
+	\label{fig:diagrama}
+\end{figure}
+
+\newpage
+\section{Conclusiones}
+Lo m\'as novedoso y que m\'as cost\'o entender fue el algoritmo de \emph{Min-Max}, entre otras cosas por algunas diferencias entre la el pseudoc\'odigo del algoritmo y la interface que hab\'ia que implementar. Pero lo pudimos resolver y parece estar funcionando adecuadamente.
+
+El an\'alisis del tablero para saber si hay alg\'un ganador lo intentamos hacer s\'olo revisando la posici\'on jugada y sus alrededores (sin recorrer todo el tablero), pero luego de algunos intentos fallidos (andaba para algunos casos y para otros no), optamos por analizar todo el tablero para saber si hay alg\'un ganador o empate.
+
+Al implementar el \emph{TDA ARBOL} nos encontramos con una limitaci\'on del \emph{TDA LISTA}, no se puede quitar un elemento de la lista sin eliminarlo. Nos hubiera gustado que la interface incluya una funci\'on que retorne el elemento y al mismo tiempo lo quite de la lista, de esa forma se pueden mover elementos de una lista a otra sin tener que eliminarlos y recrearlos. Pero para sortear este tema optamos por hacer una funci\'on que no hace nada y pasar esta funci\'on al momento de querer eliminar un elemento de la lista, as\'i podemos recuperar un elemento, eliminarlo de la lista sin que se elimine el elemento en si, y luego colocar el elemento en otra lista. Esto fue necesario al eliminar nodos y al crear un sub-\'arbol donde hay que operar con las listas y sus nodos y cambiarlos de lugar.
+
+Si se ingresa el juego en modo \emph{Computadora-vs-Computadora} el resultado es un empate, que es lo esperado dado que en \emph{Ta-Te-Ti} si ambos jugadores juegan la mejor jugada es un empate. Notamos que la primer jugada de la computadora no es en el centro sino en una esquina, creemos que esto sucede por que con el tablero vac\'io no hay ninguna jugada que sea ganadora, la mejor jugada va a ser un empate, y entonces jugando tanto en el centro como en la esquina el resultado sea empate y por algo de la implementaci\'on o de la forma que se recorre/genera el \'arbol la m\'aquina se quede con la jugada de la esquina.
 
 \end{document}
 
