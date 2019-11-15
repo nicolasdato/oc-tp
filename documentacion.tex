@@ -18,31 +18,31 @@
 \section{Definiciones y especificaci\'on de requerimientos}
 
 \subsection{Definici\'on general del proyecto de software}
-	Este proyecto se basa en la creaci\'on del famoso juego \emph{Ta-Te-Ti}, el cual cuenta con 3 modos de juego, juagador vs jugador, jugador vs computadora y computadora vs computadora.
+	Este proyecto se basa en la creaci\'on del famoso juego \emph{Ta-Te-Ti}, el cual cuenta con 3 modos de juego, jugador vs jugador, jugador vs computadora y computadora vs computadora.
 
-	El modo jugador vs jugador consite simplemente en turnos donde cada jugador realizara una jugada y se notificar\'a si esta se realiz\'o exitosamente, en caso de que no fuera as\'i (como intentar ubicar una ficha en una parte del tablero en el cual ya hab\'ia una) se pedir\'a realizar la jugada nuevamente. Las jugadas se ejecutaran decidiendo la posici\'on en la grilla, es decir, decidiendo el lugar mediante cordenadas $x$ e $y$ comenzando a contar desde $0$.
+	El modo jugador vs jugador consiste simplemente en turnos donde cada jugador realizar\'a una jugada y se notificar\'a si esta se realiz\'o exitosamente, en caso de que no fuera as\'i (como intentar ubicar una ficha en una parte del tablero en el cual ya hab\'ia una) se pedir\'a realizar la jugada nuevamente. Las jugadas se ejecutar\'an decidiendo la posici\'on en la grilla, es decir, decidiendo el lugar mediante coordenadas $x$ e $y$ comenzando a contar desde $0$.
 
-	Si se desea ejecutar uno de los dos modos donde participa la computadora, cuando sea su turno se ejecutar\'a el algoritmo de {\bf busqueda adversaria MIN-MAX} donde se buscar\'a la mejor jugara, dadas las caracter\'isticas del \emph{Ta-Te-Ti} esto significa que la computadora nunca pierde, s\'olo gana o empata.
+	Si se desea ejecutar uno de los dos modos donde participa la computadora, cuando sea su turno se ejecutar\'a el algoritmo de {\bf b\'usqueda adversaria MIN-MAX} donde se buscar\'a la mejor jugar\'a, dadas las caracter\'isticas del \emph{Ta-Te-Ti} esto significa que la computadora nunca pierde, s\'olo gana o empata.
 
-    Cualquier persona que sepa las reglas del juego puede ser capaz de jugar, lo unico que tendr\'a que hacer es indicar $x$ e $y$ para colocar la ficha en la posici\'on que se quiera.
+    Cualquier persona que sepa las reglas del juego puede ser capaz de jugar, lo \'unico que tendr\'a que hacer es indicar $x$ e $y$ para colocar la ficha en la posici\'on que se quiera.
 
 \subsection{Especificaci\'on de requerimientos del proyecto}
-    La implementacion del proyecto se ha realizado en el lenguaje C, el modo de visualizaci\'on del men\'u y tablero se ha realizado en la consola. Se ha implementado los {\itshape TDA LISTA} y {\itshape TDA ARBOL} los cuales se encontrara en una libreria dinamica denominada {\bf libliar} y esta se utilizara para el algoritomo de {\bf busqueda adversaria MIN-MAX} el cual es implementado en un {\itshape TDA IA} . Tambi\'en se hizo uso de un {\itshape TDA PARTIDA} para el manejo del tablero, turnos, etc. Por ultimo, el programa principal se encargara de de manejar tanto el {\itshape TDA PARTIDA} como el {\itshape TDA IA} e ir\'a mostrando el estado actual del tablero.
+    La implementaci\'on del proyecto se ha realizado en el lenguaje C, el modo de visualizaci\'on del men\'u y tablero se ha realizado en la consola. Se ha implementado los {\itshape TDA LISTA} y {\itshape TDA ARBOL} los cuales se encontrara en una librer\'ia din\'amica denominada {\bf libliar} y esta se utilizara para el algoritmo de {\bf b\'usqueda adversaria MIN-MAX} el cual es implementado en un {\itshape TDA IA} . Tambi\'en se hizo uso de un {\itshape TDA PARTIDA} para el manejo del tablero, turnos, etc. Por ultimo, el programa principal se encargara de de manejar tanto el {\itshape TDA PARTIDA} como el {\itshape TDA IA} e ir\'a mostrando el estado actual del tablero.
 
     El usuario al iniciar el programa tendr\'a la opci\'on de iniciar una nueva partida o de salir del sistema, en caso de iniciar una nueva partida tendr\'a que elejir en qu\'e modo es el que desea jugar y luego decidir los turnos, tambi\'en se pedir\'a ingresar el nombre de los jugadores.
 
-    El proyecto es un desarrollo original cumpliendo las pautas de implementacion dada por la catedra de la materia {\itshape organizaci\'on de computadoras}, a\'un as\'i dado el desarrollo de clases y de estructura de datos aprendido en materias anteriores los {\itshape TDA} implementados en el lenguaje C pueden ser reutilizados en proyectos/desarrollos posteriores.
+    El proyecto es un desarrollo original cumpliendo las pautas de implementacion dada por la c\'atedra de la materia {\itshape organizaci\'on de computadoras}, a\'un as\'i dado el desarrollo de clases y de estructura de datos aprendido en materias anteriores los {\itshape TDA} implementados en el lenguaje C pueden ser reutilizados en proyectos/desarrollos posteriores.
 
 \subsection{Especificaci\'on de los procedimientos}
 
 \subsubsection{Procedimientos de desarrollo}
-    Como se dijo anteriormente, la implementaci\'on se realiz\'o en el lenguaje C y se ha usado como IDE y compilador de dicho lenguaje el dado por la catedra llamado {\bf Code::Blocks y MinGW}. Se han usado varias librerias de este lenguaje, las primeras dos son {\itshape stdlib.h} y {\itshape stdio.h} las cuales son las librerias primordiales para el manejo de memoria y de I/O. Una de las otras librerias utilizadas fue {\itshape time.h} utilizada en el caso de que el usuario decida que empieza un jugador aleatorio. Otra libreria utilizada fue la de {\itshape string.h} usada para copiar cadena de caracteres de una manera mas sencilla.
+    Como se dijo anteriormente, la implementaci\'on se realiz\'o en el lenguaje C y se ha usado como IDE y compilador de dicho lenguaje el dado por la c\'atedra llamado {\bf Code::Blocks y MinGW}. Se han usado varias librer\'ias de este lenguaje, las primeras dos son {\itshape stdlib.h} y {\itshape stdio.h} las cuales son las librer\'ias primordiales para el manejo de memoria y de I/O. Una de las otras librerias utilizadas fue {\itshape time.h} utilizada en el caso de que el usuario decida que empieza un jugador aleatorio. Otra librer\'ia utilizada fue la de {\itshape string.h} usada para copiar cadena de caracteres de una manera m\'as sencilla.
 
-    Para abarcar este proyecto se decidi\'o primero la implementaci\'on del {\itshape TDA LISTA} para luego poder implementar el {\itshape TDA ARBOL} y as\'i estar en condiciones de encarar el algoritmo de {\bf busqueda adversaria MIN-MAX}. Aun as\'i primero decidimos completar el {\itshape TDA PARTIDA} antes de desarrollar {\itshape TDA IA}.
+    Para abarcar este proyecto se decidi\'o primero la implementaci\'on del {\itshape TDA LISTA} para luego poder implementar el {\itshape TDA ARBOL} y as\'i estar en condiciones de encarar el algoritmo de {\bf b\'usqueda adversaria MIN-MAX}. Aun as\'i primero decidimos completar el {\itshape TDA PARTIDA} antes de desarrollar {\itshape TDA IA}.
 
     Una vez con todos los {\itshape TDA} completados se pas\'o a la implementaci\'on del programa principal, donde se implementa un menu facilitando la experiencia del usuario.
 
-    Ya con todo finalizado se implement\' la libreria {\bf libliar} con los {\itshape TDA LISTA} y {\itshape TDA ARBOL}.
+    Ya con todo finalizado se implement\' la librer\'ia {\bf libliar} con los {\itshape TDA LISTA} y {\itshape TDA ARBOL}.
 
 \subsubsection{Procedimientos de compilaci\'on y ejecuci\'on}
     Para el uso del mismo, el usuario, el cual es as\'i mismo un desarrollador, contar\'a con el archivo comprimido {\bf .zip} conteniendo todos los archivos .cpb, .h y .c para la compilac\'on y ejecuci\'on del programa.
@@ -60,9 +60,9 @@
 \subsection{Descripci\'on jer\'arquica}
     La arquitectura del sistema cuenta con un programa principal llamado {\bf main} el cual se encarga de usar el {\itshape TDA PARTIDA} para la creaci\'on y administraci\'on de la misma, tambi\'en en el {\bf main} usar\'a el {\itshape TDA IA} en casos de ser necesario, es decir, si el usuario desea iniciar uno de los dos modos donde juega la computadora.
 
-    El {\itshape TDA IA} utiliza el algoritmo de {\bf busqueda adversaria MIN-MAX}, tambi\'en usara al {\itshape TDA PARTIDA} y {\itshape TDA ARBOL}.
+    El {\itshape TDA IA} utiliza el algoritmo de {\bf b\'usqueda adversaria MIN-MAX}, tambi\'en usar\'a al {\itshape TDA PARTIDA} y {\itshape TDA ARBOL}.
 
-    Por ultimo el {\itshape TDA ARBOL} usar\'a al {\itshape TDA LISTA} para guardar una lista de sus hijos.
+    Por \'ultimo el {\itshape TDA ARBOL} usar\'a al {\itshape TDA LISTA} para guardar una lista de sus hijos.
 
 \subsection{Diagrama de m\'odulos}
 \begin{figure}[h!tbp]
@@ -76,20 +76,20 @@
 \subsection{Descripci\'on general de los m\'odulos}
 \subsubsection{Descripci\'on general y prop\'osito}
 \begin{itemize}
-    \item {\bf TDA LISTA}: Implementa nodos enlazados los cuales apuntan al suguiente nodo y almacenan un elemento gen\'erico. La posici\'on es indirecta y tiene un nodo centinela.
-	\item {\bf TDA ARBOL}: Implementa \emph{tnodos} los cuales apuntan a su \emph{tnodo} padre (en caso de no ser la raiz), almacenan un elemento generico y una lista de hijos.
-    \item {\bf TDA PARTIDA}: Implementa una partida con informaci\'on actual de la misma. La partida guarda tanto los nombres de los jugadores, el turno del jugador al que le toca jugar, el estado altual de la partida (si alguien gan\'o, etc) y el modo de la partida que se est\'a jugando. El tablero apunta a una grilla de 3x3 la cual guarda el estado del mismo teniendo en cada posici\'on los valores $0$, $1$ o $2$ para el caso de una casilla vac\'ia, una ficha del jugador 1 o una ficha del jugador 2, respectivamente.
-    \item {\bf TDA IA}: Implementa un estado y una busqueda adversaria. El estado guarda una grilla de 3x3 con la que fue llamada y la utilidad el cual representa el resultado de la grilla (si se sigue jugando, alguien gan\'o, etc). Busqueda adversaria apunta a un arbol y a dos enteros, el jugador max y el jugador min. Con esta informaci\'on el algoritmo buscar\'a la mejor jugada que puede realizar el jugador.
+    \item {\bf TDA LISTA}: Implementa nodos enlazados los cuales apuntan al siguiente nodo y almacenan un elemento gen\'erico. La posici\'on es indirecta y tiene un nodo centinela.
+	\item {\bf TDA ARBOL}: Implementa \emph{tnodos} los cuales apuntan a su \emph{tnodo} padre (en caso de no ser la raiz), almacenan un elemento gen\'erico y una lista de hijos.
+    \item {\bf TDA PARTIDA}: Implementa una partida con informaci\'on actual de la misma. La partida guarda tanto los nombres de los jugadores, el turno del jugador al que le toca jugar, el estado actual de la partida (si alguien gan\'o, etc) y el modo de la partida que se est\'a jugando. El tablero apunta a una grilla de 3x3 la cual guarda el estado del mismo teniendo en cada posici\'on los valores $0$, $1$ o $2$ para el caso de una casilla vac\'ia, una ficha del jugador 1 o una ficha del jugador 2, respectivamente.
+    \item {\bf TDA IA}: Implementa un estado y una b\'usqueda adversaria. El estado guarda una grilla de 3x3 con la que fue llamada y la utilidad el cual representa el resultado de la grilla (si se sigue jugando, alguien gan\'o, etc). Busqueda adversaria apunta a un \'arbol y a dos enteros, el jugador max y el jugador min. Con esta informaci\'on el algoritmo buscar\'a la mejor jugada que puede realizar el jugador.
     \item {\bf main}: Implementa un men\'u en la consola el cual administra el {\itshape TDA PARTIDA} y el {\itshape TDA IA} en caso de ser necesario.
 \end{itemize}
 
 \subsubsection{Responsabilidad y restricciones}
 \begin{itemize}
-    \item {\bf TDA LISTA}: La lista espera que cuando se le ingrese un elemento ya tenga un espacio en memoria asignado. La lista, al eliminar o destrir espera una funci\'on con la cual eleminar\'a al elemento y liberar\'a el espacio asignado a memoria del mismo. Al insertar un elemento lo asignar\'a como siguiente a la posici\'on recibida.
-    \item {\bf TDA ARBOL}: El arbol espera despu\'es de ser creado que se le asigne una raiz como primer elemento, y en caso de que se le intente asignar un nodo que no sea ra\'iz se informar\'a de un error. Tambi\'en cuando se desee insertar un elemento se le tiene que asignar un espacio en memoria al mismo previamente. Al eliminar o destruir, de igual manera que la lista se espera que se le pase una funci\'on por parametro la cual se encargara del eleminar y borrar de la memoria al elemento. Al insertar un elemento se esperan dos tnodos, el primero de ellos debe ser el padre al cual se le desea agregar un hijo y el segundo es el hermano derecho al nodo a insertar, en caso de que el segundo nose sea NULL el elemento se asigna como el ultimo hijo del tnodo padre.
-    \item {\bf TDA PARTIDA}: La partida lo que espera como modo y turno son enteros, asociados a contantes ya definidas en el TDA, en el caso del nombre se espera como maximo 49 caracteres. Si dado al caso se intenta hacer un movimiento en una casilla ya ocupada, retornara un error.
-    \item {\bf TDA IA}: La ia al momento de crear la busqueda adversaria lo que espera es que se le haya pasado correctamente la partida en su estado actual, para as\'i poder empezar con el algoritmo. En el caso de resultado esperado lo que espera la ia es que el resultado buscado siempre sea el mejor, es decir, gana max, ya que la ia nunca pierde, s\'olo gana o empata. Tambien espera dos punteros a enteros los cuales modificara con la posici\'on en la cual esta la mejor jugada posible.
-    \item {\bf main}: El main tiene limitaciones al ejecutarse por consola, las cuales son que los nombres de los jugadores no podran exceder los 49 caracteres, y la segunda es que espara que cada vez que da una opci\'on a elejir espera un n\'umero entero.
+    \item {\bf TDA LISTA}: La lista espera que cuando se le ingrese un elemento ya tenga un espacio en memoria asignado. La lista, al eliminar o destruir espera una funci\'on con la cual eleminar\'a al elemento y liberar\'a el espacio asignado a memoria del mismo. Al insertar un elemento lo asignar\'a como siguiente a la posici\'on recibida.
+    \item {\bf TDA ARBOL}: El arbol espera despu\'es de ser creado que se le asigne una ra\'iz como primer elemento, y en caso de que se le intente asignar un nodo que no sea ra\'iz se informar\'a de un error. Tambi\'en cuando se desee insertar un elemento se le tiene que asignar un espacio en memoria al mismo previamente. Al eliminar o destruir, de igual manera que la lista se espera que se le pase una funci\'on por par\'ametro la cual se encargara del eliminar y borrar de la memoria al elemento. Al insertar un elemento se esperan dos tnodos, el primero de ellos debe ser el padre al cual se le desea agregar un hijo y el segundo es el hermano derecho al nodo a insertar, en caso de que el segundo nodo sea NULL el elemento se asigna como el \'ultimo hijo del tnodo padre.
+    \item {\bf TDA PARTIDA}: La partida lo que espera como modo y turno son enteros, asociados a constantes ya definidas en el TDA, en el caso del nombre se espera como m\'aximo 49 caracteres. Si dado al caso se intenta hacer un movimiento en una casilla ya ocupada, retornar\'a un error.
+    \item {\bf TDA IA}: La ia al momento de crear la b\'usqueda adversaria lo que espera es que se le haya pasado correctamente la partida en su estado actual, para as\'i poder empezar con el algoritmo. En el caso de resultado esperado lo que espera la ia es que el resultado buscado siempre sea el mejor, es decir, gana max, ya que la ia nunca pierde, s\'olo gana o empata. Tambi\'en espera dos punteros a enteros los cuales va a modificar con la posici\'on en la cual esta la mejor jugada posible.
+    \item {\bf main}: El main tiene limitaciones al ejecutarse por consola, las cuales son que los nombres de los jugadores no podr\'an exceder los 49 caracteres, y la segunda es que espera que cada vez que da una opci\'on a elegir espera un n\'umero entero.
 \end{itemize}
 
 \subsubsection{Dependencias}
@@ -105,7 +105,7 @@
 \begin{itemize}
     \item {\bf TDA LISTA}: Este TDA se encuentra implementado en la librer\'ia din\'amina llamada {\bf libliar}.
     \item {\bf TDA ARBOL}: Este TDA se encuentra implementado en la librer\'ia din\'amica llamada {\bf libliar}.
-    \item {\bf TDA PARTIDA}: Este TDA se encontrara definido en un .h denominado {\itshape partida.h} e implementado en un .c llamado {\itshape partida.c}. Estos archivos se encontraran en el {\bf .zip}.
+    \item {\bf TDA PARTIDA}: Este TDA se encontrar\'a definido en un .h denominado {\itshape partida.h} e implementado en un .c llamado {\itshape partida.c}. Estos archivos se encontraran en el {\bf .zip}.
     \item {\bf TDA IA}: Este TDA al igual que el anterior se encuentra definido en {\itshape ia.h} e implementado en {\itshape ia.c}. Estos archivos se encontrar\'an en el {\bf .zip}.
     \item {\bf main}: Este se encuentra implementado en {\itshape main.c}. Este archivo se encontrar\'a en el {\bf .zip}.
     \item {\bf libliar}: Librer\'ia din\'amica con los {\itshape TDA LISTA} y {\itshape TDA ARBOL}, se encontrar\'a en el {\bf .zip}.
@@ -116,10 +116,10 @@
     \item {\bf stdio.h}: Es la librer\'ia que contiene las definiciones de las macros, las constantes, las declaraciones de funciones de la biblioteca est\'andar del lenguaje de programaci\'on C para hacer operaciones de entrada y salida, as\'i como la definici\'on de tipos necesarias para dichas operaciones.
     \item {\bf stdlib.h}: Es la librer\'a cabecera de la biblioteca est\'andar de prop\'osito general del lenguaje de programaci\'on C. Contiene los prototipos de funciones de C para gesti\'on de memoria din\'amica, control de procesos y otros.
     \item {\bf time.h}: Es la librer\'ia relacionada con formato de hora y fecha, es un archivo de cabecera de la biblioteca est\'andar del lenguaje de programaci\'on C que contiene funciones para manipular y formatear la fecha y hora del sistema.
-    \item {\bf string.h}: Es na libreria de la biblioteca est\'andar del lenguaje de programaci\'on C que contiene la definici\'on de macros, constantes, funciones y tipos y algunas operaciones de manipulaci\'on de memoria relacionadas a cadena de caracteres.
+    \item {\bf string.h}: Es una librer\'ia de la biblioteca est\'andar del lenguaje de programaci\'on C que contiene la definici\'on de macros, constantes, funciones y tipos y algunas operaciones de manipulaci\'on de memoria relacionadas a cadena de caracteres.
 \end{itemize}
 
-\section{Descripcion de procesos y servicios ofrecidos por el sistema}
+\section{Descripci\'on de procesos y servicios ofrecidos por el sistema}
 \subsection{Invocaci\'on del programa}
 Para ejecutar el programa s\'olo basta con ejecutar \emph{tp1.exe}. No espera ning\'un par\'ametro.
 
@@ -172,7 +172,7 @@ Para realizar esto se busca al nodo $n$ en la lista de hijos de su padre, y se l
 
 \subsection{TDA PARTIDA}
 \subsubsection{Crear partida nueva y finalizarla}
-Para crear una nueva partida hay que llamar a la funci\'on \emph{void nueva\_partida(tPartida * p, int modo\_partida, int comienza, char * j1\_nombre, char * j2\_nombre)}, y se va a inicializar las estructuras con el modo de la partida, qui\'en comienza, los nombres de los jugadores y un tablero sin fichas colocadas (todas las posiciones en $0$). Si el jugador que comienza fuese aleatorio, se pide un n\'umero pseudo-aleatorio con \emph{rand()}, si el resultado es par comienza el jugador 1, sino comienza el jugador 2.
+Para crear una nueva partida hay que llamar a la funci\'on \emph{void nueva\_partida(tPartida * p, int modo\_partida, int comienza, char * j1\_nombre, char * j2\_nombre)}, y se va a inicializar las estructuras con el modo de la partida, qui\'en comienza, los nombres de los jugadores y un tablero sin fichas colocadas (todas las posiciones en $0$). Si el jugador que comienza fuese aleatorio, se pide un n\'umero pseudo-aleatorio con \emph{rand()}, si el resultado es par comienza el jugador 1, si no comienza el jugador 2.
 
 Para finalizar la partida se utiliza la funci\'on \emph{finalizar\_partida(tPartida * p)}, la cual va a eliminar la memoria utilizada para la partida.
 
@@ -198,9 +198,8 @@ Lo m\'as novedoso y que m\'as cost\'o entender fue el algoritmo de \emph{Min-Max
 
 El an\'alisis del tablero para saber si hay alg\'un ganador lo intentamos hacer s\'olo revisando la posici\'on jugada y sus alrededores (sin recorrer todo el tablero), pero luego de algunos intentos fallidos (andaba para algunos casos y para otros no), optamos por analizar todo el tablero para saber si hay alg\'un ganador o empate.
 
-Al implementar el \emph{TDA ARBOL} nos encontramos con una limitaci\'on del \emph{TDA LISTA}, no se puede quitar un elemento de la lista sin eliminarlo. Nos hubiera gustado que la interface incluya una funci\'on que retorne el elemento y al mismo tiempo lo quite de la lista, de esa forma se pueden mover elementos de una lista a otra sin tener que eliminarlos y recrearlos. Pero para sortear este tema optamos por hacer una funci\'on que no hace nada y pasar esta funci\'on al momento de querer eliminar un elemento de la lista, as\'i podemos recuperar un elemento, eliminarlo de la lista sin que se elimine el elemento en si, y luego colocar el elemento en otra lista. Esto fue necesario al eliminar nodos y al crear un sub-\'arbol donde hay que operar con las listas y sus nodos y cambiarlos de lugar.
+Al implementar el \emph{TDA ARBOL} nos encontramos con una limitaci\'on del \emph{TDA LISTA}, no se puede quitar un elemento de la lista sin eliminarlo. Nos hubiera gustado que la interfaz incluya una funci\'on que retorne el elemento y al mismo tiempo lo quite de la lista, de esa forma se pueden mover elementos de una lista a otra sin tener que eliminarlos y recrearlos. Pero para sortear este tema optamos por hacer una funci\'on que no hace nada y pasar esta funci\'on al momento de querer eliminar un elemento de la lista, as\'i podemos recuperar un elemento, eliminarlo de la lista sin que se elimine el elemento en si, y luego colocar el elemento en otra lista. Esto fue necesario al eliminar nodos y al crear un sub-\'arbol donde hay que operar con las listas y sus nodos y cambiarlos de lugar.
 
 Si se ingresa el juego en modo \emph{Computadora-vs-Computadora} el resultado es un empate, que es lo esperado dado que en \emph{Ta-Te-Ti} si ambos jugadores juegan la mejor jugada es un empate. Notamos que la primer jugada de la computadora no es en el centro sino en una esquina, creemos que esto sucede por que con el tablero vac\'io no hay ninguna jugada que sea ganadora, la mejor jugada va a ser un empate, y entonces jugando tanto en el centro como en la esquina el resultado sea empate y por algo de la implementaci\'on o de la forma que se recorre/genera el \'arbol la m\'aquina se quede con la jugada de la esquina.
 
 \end{document}
-
