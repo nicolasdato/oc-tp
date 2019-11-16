@@ -41,7 +41,7 @@ int main()
     char nombre_1[50], nombre_2[50];
     tPartida partida;
     tBusquedaAdversaria busqueda;
-    while(opcion == 1){             //Aparece el menu con las opciones de juego
+    while(opcion != 2){             //Aparece el menu con las opciones de juego
         printf("bienvenido, presione 1- si desea jugar, 2- si de desea salir\n");
         scanf("%d",&opcion);
         if(opcion == 1){
@@ -98,6 +98,7 @@ int main()
                     }
                 }
                 else{
+                    system("PAUSE()");
                     crear_busqueda_adversaria(&busqueda, partida);      //Se crea la busqueda adversaria
                     proximo_movimiento(busqueda, IA_GANA_MAX, &x, &y);  //Se calcula el mejor movimiento para Max
                     destruir_busqueda_adversaria(&busqueda);            //Luego se destruye la busqueda
@@ -118,6 +119,11 @@ int main()
                     break;
             }
             finalizar_partida(&partida);
+        }
+        else{
+            if (opcion != 2){
+                printf("Usted no a ingresado un numero valido, vuelva a ingresar su opcion\n");
+            }
         }
     }
     return 0;
