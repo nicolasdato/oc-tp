@@ -148,7 +148,8 @@ void a_eliminar(tArbol a, tNodo n, void (*fEliminar)(tElemento)){
             }
         }
     }
-    l_destruir(&(n->hijos), free);                               //Una ves terminado borra de la memoria la lista de los hijos del nodo
+    l_destruir(&(n->hijos), no_eliminar);                        //Una ves terminado borra de la memoria la lista de los hijos del nodo
+                                                                 //Solo hay que eliminar la lista, los elementos no por que se movieron de lugar
     fEliminar(n->elemento);                                      //Elimino su elememnto con la funcion pasada por parametro
     free(n);                                                     //Elimino de la memoria el espacio asignado al nodo
 }
