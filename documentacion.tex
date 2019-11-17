@@ -29,7 +29,7 @@
 \subsection{Especificaci\'on de requerimientos del proyecto}
     La implementaci\'on del proyecto se ha realizado en el lenguaje C, el modo de visualizaci\'on del men\'u y tablero se ha realizado en la consola. Se ha implementado los {\itshape TDA LISTA} y {\itshape TDA ARBOL} los cuales se encontrara en una librer\'ia din\'amica denominada {\bf libliar} y esta se utilizara para el algoritmo de {\bf b\'usqueda adversaria MIN-MAX} el cual es implementado en un {\itshape TDA IA} . Tambi\'en se hizo uso de un {\itshape TDA PARTIDA} para el manejo del tablero, turnos, etc. Por ultimo, el programa principal se encargara de de manejar tanto el {\itshape TDA PARTIDA} como el {\itshape TDA IA} e ir\'a mostrando el estado actual del tablero.
 
-    El usuario al iniciar el programa tendr\'a la opci\'on de iniciar una nueva partida o de salir del sistema, en caso de iniciar una nueva partida tendr\'a que elejir en qu\'e modo es el que desea jugar y luego decidir los turnos, tambi\'en se pedir\'a ingresar el nombre de los jugadores.
+    El usuario al iniciar el programa tendr\'a la opci\'on de iniciar una nueva partida o de salir del sistema, en caso de iniciar una nueva partida tendr\'a que elegir en qu\'e modo es el que desea jugar y luego decidir los turnos, tambi\'en se pedir\'a ingresar el nombre de los jugadores.
 
     El proyecto es un desarrollo original cumpliendo las pautas de implementacion dada por la c\'atedra de la materia {\itshape organizaci\'on de computadoras}, a\'un as\'i dado el desarrollo de clases y de estructura de datos aprendido en materias anteriores los {\itshape TDA} implementados en el lenguaje C pueden ser reutilizados en proyectos/desarrollos posteriores.
 
@@ -89,7 +89,7 @@
     \item {\bf TDA ARBOL}: El arbol espera despu\'es de ser creado que se le asigne una ra\'iz como primer elemento, y en caso de que se le intente asignar un nodo que no sea ra\'iz se informar\'a de un error. Tambi\'en cuando se desee insertar un elemento se le tiene que asignar un espacio en memoria al mismo previamente. Al eliminar o destruir, de igual manera que la lista se espera que se le pase una funci\'on por par\'ametro la cual se encargara del eliminar y borrar de la memoria al elemento. Al insertar un elemento se esperan dos tnodos, el primero de ellos debe ser el padre al cual se le desea agregar un hijo y el segundo es el hermano derecho al nodo a insertar, en caso de que el segundo nodo sea NULL el elemento se asigna como el \'ultimo hijo del tnodo padre.
     \item {\bf TDA PARTIDA}: La partida lo que espera como modo y turno son enteros, asociados a constantes ya definidas en el TDA, en el caso del nombre se espera como m\'aximo 49 caracteres. Si dado al caso se intenta hacer un movimiento en una casilla ya ocupada, retornar\'a un error.
     \item {\bf TDA IA}: La ia al momento de crear la b\'usqueda adversaria lo que espera es que se le haya pasado correctamente la partida en su estado actual, para as\'i poder empezar con el algoritmo. En el caso de resultado esperado lo que espera la ia es que el resultado buscado siempre sea el mejor, es decir, gana max, ya que la ia nunca pierde, s\'olo gana o empata. Tambi\'en espera dos punteros a enteros los cuales va a modificar con la posici\'on en la cual esta la mejor jugada posible.
-    \item {\bf main}: El main tiene limitaciones al ejecutarse por consola, las cuales son que los nombres de los jugadores no podr\'an exceder los 49 caracteres, y la segunda es que espera que cada vez que da una opci\'on a elegir espera un n\'umero entero.
+    \item {\bf main}: Las restricciones al programa principal son la longitud de los nombres de los jugadores en 49 caracteres y la elecci\'on de las opciones del men\'u espera un n\'umero entero.
 \end{itemize}
 
 \subsubsection{Dependencias}
@@ -194,7 +194,7 @@ El programa principal primero va a pedir toda la informaci\'on de la partida (ju
 Una vez terminado el juego se pregunta al usuario si se quiere seguir jugando o si se quiere salir, pudiendo jugar nuevamente sin reiniciar el programa.
 
 \section{Conclusiones}
-Lo m\'as novedoso y que m\'as cost\'o entender fue el algoritmo de \emph{Min-Max}, entre otras cosas por algunas diferencias entre la el pseudoc\'odigo del algoritmo y la interface que hab\'ia que implementar. Pero lo pudimos resolver y parece estar funcionando adecuadamente.
+Lo m\'as novedoso y que m\'as cost\'o entender fue el algoritmo de \emph{Min-Max}, entre otras cosas por algunas diferencias entre el pseudoc\'odigo del algoritmo y la interface que hab\'ia que implementar donde el pseudoc\'odigo propon\'ia una funci\'on recursiva que retorna un valor mientras que la interface no retorna ning\'un valor, pero lo pudimos resolver guardando el valor que se debe retornar en la estructura del estado de la partida.
 
 El an\'alisis del tablero para saber si hay alg\'un ganador lo intentamos hacer s\'olo revisando la posici\'on jugada y sus alrededores (sin recorrer todo el tablero), pero luego de algunos intentos fallidos (andaba para algunos casos y para otros no), optamos por analizar todo el tablero para saber si hay alg\'un ganador o empate.
 
