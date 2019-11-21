@@ -37,7 +37,7 @@ void dibujar_tablero(struct tablero *tablero)
 
 int main()
 {
-    int opcion = 1, modo, turno, x, y;
+    int opcion = 1, modo, turno, x, y, ingreso = 0;
     char nombre_1[50], nombre_2[50];
     tPartida partida;
     tBusquedaAdversaria busqueda;
@@ -45,37 +45,57 @@ int main()
         printf("bienvenido, presione 1- si desea jugar, 2- si de desea salir\n");
         scanf("%d",&opcion);
         if(opcion == 1){
-            printf("1-Modo jugador vs jugador\n");
-            printf("2-Modo jugador vs computadora\n");
-            printf("3-Modo computadora vs computadora\n");
-            scanf("%d",&modo);
-            printf("Que jugador desea que empiece primero\n");
-            printf("1-Jugador 1\n");
-            printf("2-Jugador 2\n");
-            printf("3-Jugador aleatorio\n");
-            scanf("%d",&turno);
-            if(modo == 1){                              //Se guardan las opciones seleccionadas por el usuario
-                modo = PART_MODO_USUARIO_VS_USUARIO;
-            }
-            else{
-                if(modo == 2){
-                    modo = PART_MODO_USUARIO_VS_AGENTE_IA;
+            while(ingreso < 2){
+                ingreso = 0;
+                printf("1-Modo jugador vs jugador\n");
+                printf("2-Modo jugador vs computadora\n");
+                printf("3-Modo computadora vs computadora\n");
+                scanf("%d",&modo);
+                printf("Que jugador desea que empiece primero\n");
+                printf("1-Jugador 1\n");
+                printf("2-Jugador 2\n");
+                printf("3-Jugador aleatorio\n");
+                scanf("%d",&turno);
+                if(modo == 1){                              //Se guardan las opciones seleccionadas por el usuario
+                    modo = PART_MODO_USUARIO_VS_USUARIO;
+                    ingreso++;
                 }
                 else{
-                    modo = PART_MODO_AGENTE_IA_VS_AGENTE_IA;
+                    if(modo == 2){
+                        modo = PART_MODO_USUARIO_VS_AGENTE_IA;
+                        ingreso++;
+                    }
+                    else{
+                        if(modo == 3){
+                            modo = PART_MODO_AGENTE_IA_VS_AGENTE_IA;
+                            ingreso++;
+                        }
+                        else{
+                            printf("El modo ingresado no es valido\n");
+                        }
+                    }
                 }
-            }
-            if(turno == 1){
-                turno = PART_JUGADOR_1;
-            }
-            else{
-                if(turno == 2){
-                    turno = PART_JUGADOR_2;
+                if(turno == 1){
+                    turno = PART_JUGADOR_1;
+                    ingreso++;
                 }
                 else{
-                    turno = PART_JUGADOR_RANDOM;
+                    if(turno == 2){
+                        turno = PART_JUGADOR_2;
+                        ingreso++;
+                    }
+                    else{
+                        if(turno == 3){
+                            turno = PART_JUGADOR_RANDOM;
+                            ingreso++;
+                        }
+                        else{
+                            printf("El turno ingresado no es valido\n");
+                        }
+                    }
                 }
             }
+            ingreso = 0;
             printf("Ingrese el nombre del jugador 1, sin espacios: ");
             scanf("%s", nombre_1);
             printf("Ingrese el nombre del jugador 2, sin espacios: ");
@@ -128,3 +148,116 @@ int main()
     }
     return 0;
 }
+/*
+#include "arbol.h"
+#include <stdlib.h>
+#include <stdio.h>
+
+tElemento elemento(int i)
+{
+	tElemento e;
+	e = malloc(sizeof(i));
+	*(int *)e = i;
+	return e;
+}
+
+void _preorder(tArbol arbol, tNodo nodo)
+{
+	int *e;
+	tLista lista;
+	tNodo n;
+	tPosicion pos;
+	int l;
+
+	e = a_recuperar(arbol, nodo);
+	printf("%d ", *e);
+	lista = a_hijos(arbol, nodo);
+	l = l_longitud(lista);
+	pos = l_primera(lista);
+	while (l > 0) {
+		n = l_recuperar(lista, pos);
+		_preorder(arbol, n);
+		pos = l_siguiente(lista, pos);
+		l--;
+	}
+}
+
+void preorder(tArbol arbol)
+{
+	printf("[");
+	_preorder(arbol, a_raiz(arbol));
+	printf("]\n");
+}
+
+int main(int argc, char **argv)
+{
+	tArbol arbol;
+	tNodo nodo3;
+	tNodo nodo7;
+	tNodo nodo9;
+	tNodo nodo11;
+	tNodo nodo12;
+	tArbol subarbol;
+
+	printf("Se crea arbol\n");
+	crear_arbol(&arbol);
+	printf("Se crea raiz\n");
+	crear_raiz(arbol, elemento(1));
+	preorder(arbol);
+	printf("Se inserta 2\n");
+	a_insertar(arbol, a_raiz(arbol), NULL, elemento(2));
+	preorder(arbol);
+	printf("Se inserta 3\n");
+	nodo3 = a_insertar(arbol, a_raiz(arbol), NULL, elemento(3));
+	preorder(arbol);
+	printf("Se inserta 4\n");
+	a_insertar(arbol, a_raiz(arbol), NULL, elemento(4));
+	preorder(arbol);
+	printf("Se inserta 5\n");
+	a_insertar(arbol, a_raiz(arbol), NULL, elemento(5));
+	preorder(arbol);
+	printf("Se inserta 9\n");
+	nodo9 = a_insertar(arbol, nodo3, NULL, elemento(9));
+	preorder(arbol);
+	printf("Se inserta 6\n");
+	a_insertar(arbol, nodo3, nodo9, elemento(6));
+	preorder(arbol);
+	printf("Se inserta 7\n");
+	nodo7 = a_insertar(arbol, nodo3, nodo9, elemento(7));
+	preorder(arbol);
+	printf("Se inserta 8\n");
+	a_insertar(arbol, nodo3, nodo9, elemento(8));
+	preorder(arbol);
+	printf("Se inserta 10\n");
+	a_insertar(arbol, nodo7, NULL, elemento(10));
+	preorder(arbol);
+	printf("Se inserta 11\n");
+	nodo11 = a_insertar(arbol, nodo7, NULL, elemento(11));
+	preorder(arbol);
+	printf("Se inserta 12\n");
+	nodo12 = a_insertar(arbol, nodo7, NULL, elemento(12));
+	preorder(arbol);
+	printf("Subarbol\n");
+	a_sub_arbol(arbol, nodo7, &subarbol);
+	preorder(arbol);
+	preorder(subarbol);
+	printf("Se elimina 3\n");
+	a_eliminar(arbol, nodo3, free);
+	preorder(arbol);
+	printf("Se elimina 11\n");
+	a_eliminar(subarbol, nodo11, free);
+	preorder(subarbol);
+	printf("Se elimina 12\n");
+	a_eliminar(subarbol, nodo12, free);
+	preorder(subarbol);
+	printf("Se elimina raiz\n");
+	a_eliminar(subarbol, a_raiz(subarbol), free);
+	preorder(subarbol);
+	printf("Se destruye arbol\n");
+	a_destruir(&arbol, free);
+	printf("Se destruye subarbol\n");
+	a_destruir(&subarbol, free);
+
+	return 0;
+}
+*/
